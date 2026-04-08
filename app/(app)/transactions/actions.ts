@@ -37,7 +37,7 @@ export async function createTransaction(formData: FormData) {
 
   const { error } = await supabase
     .from("transactions")
-    .insert([transactionPayload as any]);
+    .insert([transactionPayload]);
 
   if (error) {
     redirect(`/transactions?error=${encodeURIComponent(error.message)}`);
