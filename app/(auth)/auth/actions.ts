@@ -1,0 +1,45 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+
+export async function signIn(formData: FormData) {
+  const email = String(formData.get("email") ?? "");
+  const password = String(formData.get("password") ?? "");
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    redirect(`/auth?message=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect("/dashboard");
+}
+
+export async function signUp(formData: FormData) {
+  const email = String(formData.get("email") ?? "");
+  const password = String(formData.get("password") ?? "");
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signUp({ email, password });
+
+  if (error) {
+    redirect(`/auth?message=${encodeURIComponent(error.message)}`);
+  }
+
+  if (data.session) {
+    redirect("/dashboard");
+  }
+
+  redirect(
+    "/auth?message=" +
+      encodeURIComponent("Account created. Check your email if confirmation is enabled.")
+  );
+}
+
+export async function signOut() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/auth");
+}
