@@ -17,10 +17,10 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface-strong)] shadow-[0_8px_20px_rgba(32,24,16,0.025)]">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
-          <thead className="bg-slate-50 text-slate-500">
+        <table className="min-w-full divide-y divide-[rgba(120,104,90,0.1)] text-left text-sm">
+          <thead className="bg-[rgba(246,241,234,0.72)] text-[var(--muted)]">
             <tr>
               <th className="px-5 py-4 font-medium">Date</th>
               <th className="px-5 py-4 font-medium">Type</th>
@@ -30,9 +30,9 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
               <th className="px-5 py-4 font-medium">Amount</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-[rgba(120,104,90,0.08)]">
             {transactions.map((transaction) => (
-              <tr key={transaction.id} className="text-slate-700">
+              <tr key={transaction.id} className="text-[var(--foreground)]">
                 <td className="px-5 py-4">
                   {new Intl.DateTimeFormat("en-AU", { dateStyle: "medium" }).format(
                     new Date(`${transaction.date}T00:00:00`)
@@ -41,8 +41,8 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
                 <td className="px-5 py-4 capitalize">{transaction.type}</td>
                 <td className="px-5 py-4">{transaction.category}</td>
                 <td className="px-5 py-4">{transaction.brand_or_source}</td>
-                <td className="px-5 py-4 text-slate-500">{transaction.notes || "—"}</td>
-                <td className="px-5 py-4 font-medium text-slate-900">
+                <td className="px-5 py-4 text-[var(--muted)]">{transaction.notes || "—"}</td>
+                <td className="px-5 py-4 font-medium text-[var(--foreground)]">
                   {formatCurrency(Number(transaction.amount))}
                 </td>
               </tr>

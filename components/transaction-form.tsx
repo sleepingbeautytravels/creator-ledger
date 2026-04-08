@@ -23,21 +23,23 @@ function SubmitButton() {
 
 export function TransactionForm() {
   const today = getTodayValue();
+  const fieldClassName =
+    "w-full rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3.5 text-[15px] text-[var(--foreground)] outline-none transition focus:border-[#8b7868]";
 
   return (
-    <form action={createTransaction} className="grid gap-4 md:grid-cols-2">
-      <label className="space-y-2 text-sm text-slate-600">
+    <form action={createTransaction} className="grid gap-5 md:grid-cols-2">
+      <label className="space-y-2.5 text-sm text-[var(--muted)]">
         <span>Date</span>
         <input
           required
           type="date"
           name="date"
           defaultValue={today}
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none ring-0 transition focus:border-slate-400"
+          className={fieldClassName}
         />
       </label>
 
-      <label className="space-y-2 text-sm text-slate-600">
+      <label className="space-y-2.5 text-sm text-[var(--muted)]">
         <span>Amount</span>
         <input
           required
@@ -46,16 +48,16 @@ export function TransactionForm() {
           type="number"
           name="amount"
           placeholder="0.00"
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none ring-0 transition focus:border-slate-400"
+          className={fieldClassName}
         />
       </label>
 
-      <label className="space-y-2 text-sm text-slate-600">
+      <label className="space-y-2.5 text-sm text-[var(--muted)]">
         <span>Type</span>
         <select
           name="type"
           defaultValue="income"
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400"
+          className={fieldClassName}
         >
           {transactionTypes.map((type) => (
             <option key={type.value} value={type.value}>
@@ -65,39 +67,39 @@ export function TransactionForm() {
         </select>
       </label>
 
-      <label className="space-y-2 text-sm text-slate-600">
+      <label className="space-y-2.5 text-sm text-[var(--muted)]">
         <span>Category</span>
         <input
           required
           type="text"
           name="category"
           placeholder="Campaign, software, travel..."
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400"
+          className={fieldClassName}
         />
       </label>
 
-      <label className="space-y-2 text-sm text-slate-600">
+      <label className="space-y-2.5 text-sm text-[var(--muted)]">
         <span>Brand or source</span>
         <input
           required
           type="text"
           name="brand_or_source"
           placeholder="Brand, client, platform..."
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400"
+          className={fieldClassName}
         />
       </label>
 
-      <label className="space-y-2 text-sm text-slate-600 md:col-span-2">
+      <label className="space-y-2.5 text-sm text-[var(--muted)] md:col-span-2">
         <span>Notes</span>
         <textarea
           name="notes"
           rows={4}
           placeholder="Optional context"
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400"
+          className={fieldClassName}
         />
       </label>
 
-      <div className="md:col-span-2">
+      <div className="pt-1 md:col-span-2">
         <SubmitButton />
       </div>
     </form>

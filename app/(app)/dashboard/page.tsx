@@ -1,4 +1,6 @@
 import { Card } from "@/components/card";
+import { MonthlyNoteCard } from "@/components/monthly-note-card";
+import { PaidVsGiftedCard } from "@/components/paid-vs-gifted-card";
 import { SummaryCard } from "@/components/summary-card";
 import { getDashboardSummary } from "@/lib/transactions/queries";
 import { formatMonthLabel } from "@/lib/utils";
@@ -7,14 +9,14 @@ export default async function DashboardPage() {
   const summary = await getDashboardSummary();
 
   return (
-    <div className="space-y-8">
-      <section className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Overview</p>
-        <h1 className="text-4xl font-semibold tracking-tight text-slate-900">
+    <div className="space-y-12 sm:space-y-14">
+      <section className="space-y-5">
+        <p className="text-xs font-normal uppercase tracking-[0.28em] text-[var(--muted)]/75">OVERVIEW</p>
+        <h1 className="text-4xl font-semibold text-[var(--foreground)] sm:text-5xl">
           {formatMonthLabel(summary.month)}
         </h1>
-        <p className="max-w-2xl text-slate-600">
-          A quick snapshot of income, costs, gifted value, and profit for the current month.
+        <p className="max-w-3xl text-[15px] leading-7 text-[var(--muted)]/88">
+          A clear snapshot of paid work, operational costs, gifted value, and net profit for the current month.
         </p>
       </section>
 
@@ -25,11 +27,21 @@ export default async function DashboardPage() {
         <SummaryCard label="Net profit" value={summary.netProfit} />
       </section>
 
+      <section className="grid gap-4 md:grid-cols-2">
+        <PaidVsGiftedCard income={summary.income} gifted={summary.gifted} />
+        <MonthlyNoteCard
+          income={summary.income}
+          expense={summary.expense}
+          gifted={summary.gifted}
+          netProfit={summary.netProfit}
+        />
+      </section>
+
       <Card>
-        <h2 className="text-xl font-semibold text-slate-900">How to use this month</h2>
-        <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-          Use the transactions page to log paid work, operational costs, and gifted items. The
-          dashboard updates automatically from your entries and stays scoped to your account.
+        <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">This month, at a glance</h2>
+        <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[var(--muted)]/88">
+          A calm overview of your work this month — what came in, what went out, and what arrived
+          in kind. Use this space to stay aware, not overwhelmed.
         </p>
       </Card>
     </div>

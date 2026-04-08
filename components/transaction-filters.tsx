@@ -7,24 +7,27 @@ type TransactionFiltersProps = {
 };
 
 export function TransactionFilters({ month, type }: TransactionFiltersProps) {
+  const fieldClassName =
+    "w-full rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[#8b7868]";
+
   return (
-    <form className="flex flex-col gap-3 sm:flex-row sm:items-end">
-      <label className="space-y-2 text-sm text-slate-600">
+    <form className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+      <label className="space-y-2 text-sm text-[var(--muted)]">
         <span>Month</span>
         <input
           type="month"
           name="month"
           defaultValue={month ?? getCurrentMonthValue()}
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400"
+          className={fieldClassName}
         />
       </label>
 
-      <label className="space-y-2 text-sm text-slate-600">
+      <label className="space-y-2 text-sm text-[var(--muted)]">
         <span>Type</span>
         <select
           name="type"
           defaultValue={type ?? "all"}
-          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400"
+          className={fieldClassName}
         >
           <option value="all">All types</option>
           <option value="income">Income</option>
@@ -33,7 +36,7 @@ export function TransactionFilters({ month, type }: TransactionFiltersProps) {
         </select>
       </label>
 
-      <Button type="submit" variant="secondary" className="h-[46px]">
+      <Button type="submit" variant="secondary" className="h-[46px] px-5">
         Apply filters
       </Button>
     </form>
