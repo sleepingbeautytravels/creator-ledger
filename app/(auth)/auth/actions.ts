@@ -1,5 +1,6 @@
 "use server";
 
+import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -32,10 +33,9 @@ export async function signUp(formData: FormData) {
     redirect("/dashboard");
   }
 
-  redirect(
-    "/auth?message=" +
-      encodeURIComponent("Account created. Check your email if confirmation is enabled.")
-  );
+  const message = encodeURIComponent("Account created. Check your email if confirmation is enabled.");
+  const redirectTo = (`/auth?message=${message}`) as Route;
+  redirect(redirectTo);
 }
 
 export async function signOut() {

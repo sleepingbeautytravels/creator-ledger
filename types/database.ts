@@ -37,6 +37,7 @@ export type Database = {
           notes?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

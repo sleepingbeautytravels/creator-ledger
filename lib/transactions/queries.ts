@@ -1,11 +1,19 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMonthValue, getMonthRange } from "@/lib/utils";
-import { TransactionType } from "@/types/database";
+import { Database, TransactionType } from "@/types/database";
 
 type TransactionFilter = {
   month?: string;
   type?: TransactionType | "all";
 };
+
+type TransactionTotals = {
+  income: number;
+  expense: number;
+  gifted: number;
+};
+
+type TransactionRow = Database["public"]["Tables"]["transactions"]["Row"];
 
 export async function getCurrentUser() {
   const supabase = await createClient();
@@ -30,12 +38,15 @@ export async function getDashboardSummary(month = getCurrentMonthValue()) {
     throw new Error(error.message);
   }
 
-  const totals = data.reduce(
-    (summary, transaction) => {
-      summary[transaction.type] += Number(transaction.amount);
+  const transactions: TransactionRow[] = data ?? [];
+
+  const totals = transactions.reduce(
+    (summary: TransactionTotals, transaction) => {
+      const transactionType = transaction.type as keyof TransactionTotals;
+      summary[transactionType] += Number(transaction.amount);
       return summary;
     },
-    { income: 0, expense: 0, gifted: 0 }
+    { income: 0, expense: 0, gifted: 0 } as TransactionTotals
   );
 
   return {
