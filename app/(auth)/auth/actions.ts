@@ -22,8 +22,15 @@ export async function signUp(formData: FormData) {
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
   const supabase = await createClient();
+  const emailRedirectTo = "https://creator-ledger-fjyn.vercel.app/auth/callback";
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo
+    }
+  });
 
   if (error) {
     redirect(`/auth?message=${encodeURIComponent(error.message)}`);
