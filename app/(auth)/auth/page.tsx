@@ -1,5 +1,6 @@
 import { AuthFormCard } from "@/components/auth-form-card";
 import { Card } from "@/components/card";
+import { SupportCardActions } from "@/components/support-card-actions";
 
 type AuthPageProps = {
   searchParams: Promise<{
@@ -36,23 +37,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <a
-                href="https://buymeacoffee.com/sleepingbeautytravels"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-medium text-white no-underline shadow-[0_1px_2px_rgba(32,28,26,0.06)] transition-[background-color,box-shadow] duration-300 ease-out hover:bg-[#1a1a1a] hover:shadow-[0_8px_20px_rgba(32,24,16,0.08)]"
-              >
-                Support
-              </a>
-
-              <a
-                href="/demo"
-                className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-sm text-[var(--foreground)] no-underline transition duration-200 hover:bg-white"
-              >
-                View demo
-              </a>
-            </div>
+            <SupportCardActions />
 
             <p className="text-center text-xs text-[var(--muted)]/80">Completely optional.</p>
           </Card>
