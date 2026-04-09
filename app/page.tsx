@@ -46,6 +46,20 @@ const steps = [
 export default function HomePage() {
   return (
     <main className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
+      <header className="mb-10 flex items-center justify-between gap-4">
+        <Link href="/" className="text-xs uppercase tracking-[0.28em] text-[var(--muted)]">
+          CREATOR LEDGER
+        </Link>
+        <nav className="flex items-center gap-4 text-sm text-[var(--muted)]">
+          <Link href="/about" className="transition hover:text-[var(--foreground)]">
+            About
+          </Link>
+          <Link href="/demo" className="transition hover:text-[var(--foreground)]">
+            Demo
+          </Link>
+        </nav>
+      </header>
+
       <section className="grid min-h-[78vh] items-center gap-12 lg:grid-cols-[1.08fr_0.92fr]">
         <div className="space-y-8">
           <div className="space-y-5">
@@ -177,6 +191,9 @@ export default function HomePage() {
           <div className="flex justify-center">
             <SupportButton />
           </div>
+          <p className="text-xs text-[var(--muted)]/80">
+            Free to use. If it’s helpful, you can support the project.
+          </p>
         </Card>
       </section>
 
@@ -192,6 +209,12 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+
+      <footer className="border-t border-[var(--border)] pt-6 text-center text-sm text-[var(--muted)]">
+        <Link href="/about" className="transition hover:text-[var(--foreground)]">
+          About Creator Ledger
+        </Link>
+      </footer>
     </main>
   );
 }
