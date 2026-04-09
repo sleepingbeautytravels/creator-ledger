@@ -15,8 +15,13 @@ export function AuthFormCard({ initialMessage }: AuthFormCardProps) {
   const supabase = createClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(initialMessage ?? null);
 
   async function handleLogin() {
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -24,17 +29,19 @@ export function AuthFormCard({ initialMessage }: AuthFormCardProps) {
 
     if (error) {
       console.log("Login error:", error.message);
-      alert(error.message);
+      setErrorMessage(error.message);
       return;
     }
 
     console.log("Login successful");
-    alert("Login successful");
     router.push("/dashboard");
     router.refresh();
   }
 
   async function handleSignup() {
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password
@@ -42,17 +49,19 @@ export function AuthFormCard({ initialMessage }: AuthFormCardProps) {
 
     if (error) {
       console.log("Signup error:", error.message);
-      alert(error.message);
+      setErrorMessage(error.message);
       return;
     }
 
     console.log("Signup successful", data);
-    alert("Signup successful. Check your email if confirmation is enabled.");
 
     if (data.session) {
       router.push("/dashboard");
       router.refresh();
+      return;
     }
+
+    setSuccessMessage("Account created. Check your email to confirm your account.");
   }
 
   return (
@@ -64,9 +73,15 @@ export function AuthFormCard({ initialMessage }: AuthFormCardProps) {
         </p>
       </div>
 
-      {initialMessage ? (
+      {errorMessage ? (
+        <div className="rounded-[1.25rem] bg-[rgba(190,72,72,0.08)] px-4 py-3 text-sm text-[rgba(128,43,43,0.95)]">
+          {errorMessage}
+        </div>
+      ) : null}
+
+      {successMessage ? (
         <div className="rounded-[1.25rem] bg-[rgba(246,241,234,0.88)] px-4 py-3 text-sm text-[var(--muted)]">
-          {initialMessage}
+          {successMessage}
         </div>
       ) : null}
 
