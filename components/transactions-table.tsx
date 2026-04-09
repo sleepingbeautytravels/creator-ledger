@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { deleteTransaction, updateTransaction } from "@/app/(app)/transactions/actions";
+import { categoryPresets } from "@/lib/transactions/categories";
 import { formatCurrency } from "@/lib/utils";
 import { Database } from "@/types/database";
 
@@ -82,7 +83,19 @@ export function TransactionsTable({ transactions, returnTo }: TransactionsTableP
 
                         <label className="space-y-2 text-sm text-[var(--muted)]">
                           <span>Category</span>
-                          <input required type="text" name="category" defaultValue={transaction.category} className={fieldClassName} />
+                          <input
+                            required
+                            type="text"
+                            name="category"
+                            list={`category-presets-${transaction.id}`}
+                            defaultValue={transaction.category}
+                            className={fieldClassName}
+                          />
+                          <datalist id={`category-presets-${transaction.id}`}>
+                            {categoryPresets.map((category) => (
+                              <option key={category} value={category} />
+                            ))}
+                          </datalist>
                         </label>
 
                         <label className="space-y-2 text-sm text-[var(--muted)]">

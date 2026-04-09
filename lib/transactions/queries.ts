@@ -4,6 +4,8 @@ import { Database, TransactionType } from "@/types/database";
 
 type TransactionFilter = {
   month?: string;
+  from?: string;
+  to?: string;
   type?: TransactionType | "all";
 };
 
@@ -21,6 +23,22 @@ function normalizeMonth(month?: string) {
 
 function normalizeType(type?: TransactionType | "all") {
   return type && ["income", "expense", "gifted", "all"].includes(type) ? type : "all";
+}
+
+function isDateValue(value?: string) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(value ?? "");
+}
+
+export function getTransactionDateRange(filters: TransactionFilter = {}) {
+  const fallback = getMonthRange(normalizeMonth(filters.month));
+  let start = isDateValue(filters.from) ? filters.from! : fallback.start;
+  let end = isDateValue(filters.to) ? filters.to! : fallback.end;
+
+  if (start > end) {
+    [start, end] = [end, start];
+  }
+
+  return { start, end };
 }
 
 export async function getCurrentUser() {
@@ -69,9 +87,8 @@ export async function getDashboardSummary(month = getCurrentMonthValue()) {
 
 export async function getTransactions(filters: TransactionFilter = {}) {
   const supabase = await createClient();
-  const month = normalizeMonth(filters.month);
   const type = normalizeType(filters.type);
-  const { start, end } = getMonthRange(month);
+  const { start, end } = getTransactionDateRange(filters);
 
   let query = supabase
     .from("transactions")

@@ -3,6 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { createTransaction } from "@/app/(app)/transactions/actions";
 import { Button } from "@/components/button";
+import { categoryPresets } from "@/lib/transactions/categories";
 import { getTodayValue } from "@/lib/utils";
 
 const transactionTypes = [
@@ -73,9 +74,15 @@ export function TransactionForm() {
           required
           type="text"
           name="category"
+          list="category-presets"
           placeholder="Campaign, software, travel..."
           className={fieldClassName}
         />
+        <datalist id="category-presets">
+          {categoryPresets.map((category) => (
+            <option key={category} value={category} />
+          ))}
+        </datalist>
       </label>
 
       <label className="space-y-2.5 text-sm text-[var(--muted)]">

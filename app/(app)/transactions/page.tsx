@@ -1,13 +1,17 @@
+import { BrandSourceSummary } from "@/components/brand-source-summary";
 import { Card } from "@/components/card";
+import { CsvExportButton } from "@/components/csv-export-button";
 import { TransactionFilters } from "@/components/transaction-filters";
 import { TransactionForm } from "@/components/transaction-form";
 import { TransactionsTable } from "@/components/transactions-table";
-import { getTransactions } from "@/lib/transactions/queries";
-import { formatMonthLabel, getCurrentMonthValue } from "@/lib/utils";
+import { getTransactionDateRange, getTransactions } from "@/lib/transactions/queries";
+import { getCurrentMonthValue } from "@/lib/utils";
 
 type TransactionsPageProps = {
   searchParams: Promise<{
     month?: string;
+    from?: string;
+    to?: string;
     type?: "income" | "expense" | "gifted" | "all";
     error?: string;
     success?: string;
@@ -17,10 +21,16 @@ type TransactionsPageProps = {
 export default async function TransactionsPage({ searchParams }: TransactionsPageProps) {
   const params = await searchParams;
   const month = params.month ?? getCurrentMonthValue();
+  const { start, end } = getTransactionDateRange({
+    month,
+    from: params.from,
+    to: params.to
+  });
   const type = params.type ?? "all";
-  const transactions = await getTransactions({ month, type });
+  const transactions = await getTransactions({ from: start, to: end, type });
   const filterParams = new URLSearchParams();
-  filterParams.set("month", month);
+  filterParams.set("from", start);
+  filterParams.set("to", end);
   filterParams.set("type", type);
   const returnTo = `/transactions?${filterParams.toString()}`;
 
@@ -29,7 +39,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
       <section className="space-y-4">
         <p className="text-xs uppercase tracking-[0.28em] text-[var(--muted)]">TRANSACTIONS</p>
         <h1 className="text-4xl font-semibold text-[var(--foreground)] sm:text-5xl">
-          {formatMonthLabel(month)}
+          {start === end ? start : `${start} to ${end}`}
         </h1>
         <p className="max-w-3xl leading-7 text-[var(--muted)]">
           Add and review every creator transaction in one place, with simple filters to keep
@@ -60,13 +70,18 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-1.5">
             <h2 className="text-xl font-semibold text-[var(--foreground)]">Ledger entries</h2>
-            <p className="text-sm text-[var(--muted)]">Filter by month and transaction type.</p>
+            <p className="text-sm text-[var(--muted)]">Filter by date range and transaction type.</p>
           </div>
-          <TransactionFilters month={month} type={type} />
+          <div className="flex flex-col gap-3 xl:items-end">
+            <TransactionFilters from={start} to={end} type={type} />
+            <CsvExportButton transactions={transactions} from={start} to={end} />
+          </div>
         </div>
 
         <TransactionsTable transactions={transactions} returnTo={returnTo} />
       </Card>
+
+      <BrandSourceSummary transactions={transactions} />
     </div>
   );
 }

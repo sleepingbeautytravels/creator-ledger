@@ -1,23 +1,33 @@
-import { getCurrentMonthValue } from "@/lib/utils";
 import { Button } from "@/components/button";
 
 type TransactionFiltersProps = {
-  month?: string;
+  from?: string;
+  to?: string;
   type?: string;
 };
 
-export function TransactionFilters({ month, type }: TransactionFiltersProps) {
+export function TransactionFilters({ from, to, type }: TransactionFiltersProps) {
   const fieldClassName =
     "w-full rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[#8b7868]";
 
   return (
     <form action="/transactions" method="get" className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
       <label className="space-y-2 text-sm text-[var(--muted)]">
-        <span>Month</span>
+        <span>From date</span>
         <input
-          type="month"
-          name="month"
-          defaultValue={month ?? getCurrentMonthValue()}
+          type="date"
+          name="from"
+          defaultValue={from}
+          className={fieldClassName}
+        />
+      </label>
+
+      <label className="space-y-2 text-sm text-[var(--muted)]">
+        <span>To date</span>
+        <input
+          type="date"
+          name="to"
+          defaultValue={to}
           className={fieldClassName}
         />
       </label>
