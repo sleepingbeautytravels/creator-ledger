@@ -1,9 +1,12 @@
 import { BrandSourceSummary } from "@/components/brand-source-summary";
 import { Card } from "@/components/card";
+import { CategoryBreakdown } from "@/components/category-breakdown";
 import { CsvExportButton } from "@/components/csv-export-button";
 import { TransactionFilters } from "@/components/transaction-filters";
+import { TransactionInsightSummary } from "@/components/transaction-insight-summary";
 import { TransactionForm } from "@/components/transaction-form";
 import { TransactionsTable } from "@/components/transactions-table";
+import { TopSourceInsights } from "@/components/top-source-insights";
 import { getTransactionDateRange, getTransactions } from "@/lib/transactions/queries";
 import { getCurrentMonthValue } from "@/lib/utils";
 
@@ -81,7 +84,13 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
         <TransactionsTable transactions={transactions} returnTo={returnTo} />
       </Card>
 
+      <TransactionInsightSummary transactions={transactions} />
+
+      <TopSourceInsights transactions={transactions} />
+
       <BrandSourceSummary transactions={transactions} />
+
+      <CategoryBreakdown transactions={transactions} />
     </div>
   );
 }
