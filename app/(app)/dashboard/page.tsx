@@ -40,12 +40,16 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
       </section>
 
       {!hasAnyTransactions ? (
-        <OnboardingEmptyState
-          heading="You haven’t added any entries yet."
-          body="Start by logging your first paid, gifted, or expense entry to begin building a clearer picture of your work."
-          ctaLabel="Add your first transaction"
-          href="/transactions"
-        />
+        <div className="max-w-3xl">
+          <OnboardingEmptyState
+            heading="You haven’t added any entries yet."
+            body="Start by logging your first paid, gifted, or expense entry to begin building a clearer picture of your work."
+            secondaryLine="You can review it later by month, quarter, year to date, or all time."
+            ctaLabel="Add your first transaction"
+            href="/transactions"
+            className="p-8 sm:p-10"
+          />
+        </div>
       ) : (
         <>
           <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
