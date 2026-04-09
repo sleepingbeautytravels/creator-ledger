@@ -2,6 +2,7 @@ import { Card } from "@/components/card";
 import { MonthlyNoteCard } from "@/components/monthly-note-card";
 import { PaidVsGiftedCard } from "@/components/paid-vs-gifted-card";
 import { SummaryCard } from "@/components/summary-card";
+import { SupportButton } from "@/components/support-button";
 
 const demoSummary = {
   income: 3200,
@@ -33,16 +34,9 @@ export default function DemoPage() {
             </div>
           </div>
 
-          <div className="space-y-2 pt-1 sm:pt-2">
-            <a
-              href="https://buymeacoffee.com/sleepingbeautytravels"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-5 py-3 text-sm font-medium text-white no-underline transition duration-300 hover:bg-neutral-800"
-            >
-              Support Creator Ledger
-            </a>
-            <p className="text-center text-xs text-[var(--muted)]/80">
+          <div className="space-y-2 pt-1 sm:pt-2 sm:text-right">
+            <SupportButton className="min-w-[116px]" />
+            <p className="text-xs text-[var(--muted)]/80">
               Completely optional — if you find this helpful.
             </p>
           </div>

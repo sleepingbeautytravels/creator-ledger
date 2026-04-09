@@ -1,16 +1,9 @@
-"use client";
-
-import { Button } from "@/components/button";
+import { SupportButton } from "@/components/support-button";
 
 export function SupportCardActions() {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row">
-      <Button
-        className="bg-neutral-900 text-white hover:bg-neutral-800 w-full"
-        onClick={() => window.open("https://buymeacoffee.com/sleepingbeautytravels", "_blank")}
-      >
-        Support ☕
-      </Button>
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <SupportButton className="min-w-[116px]" />
 
       <a
         href="/demo"
