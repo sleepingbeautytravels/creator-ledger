@@ -28,40 +28,33 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
 
           <Card className="space-y-4">
             <div className="space-y-2">
-              <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">Get access</h2>
+              <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
+                Support Creator Ledger
+              </h2>
               <p className="max-w-md text-sm leading-6 text-[var(--muted)]">
-                Purchase Creator Ledger for $9 and start using the dashboard.
+                If Creator Ledger has been helpful, you can support its ongoing development here.
               </p>
             </div>
 
-            <a
-              href="https://buy.stripe.com/28E9AT0143GneVn43J2VG00"
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#000000",
-                color: "#ffffff",
-                padding: "12px 20px",
-                borderRadius: "9999px",
-                fontWeight: 600,
-                fontSize: "14px",
-                textDecoration: "none"
-              }}
-            >
-              Get access for $9
-            </a>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a
+                href="https://buymeacoffee.com/sleepingbeautytravels"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-medium text-white no-underline shadow-[0_1px_2px_rgba(32,28,26,0.06)] transition-[background-color,box-shadow] duration-300 ease-out hover:bg-[#1a1a1a] hover:shadow-[0_8px_20px_rgba(32,24,16,0.08)]"
+              >
+                Support
+              </a>
 
-            <a
-              href="/demo"
-              className="inline-flex items-center justify-center self-start rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-sm text-[var(--foreground)] no-underline transition duration-200 hover:bg-white"
-            >
-              View demo
-            </a>
+              <a
+                href="/demo"
+                className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2 text-sm text-[var(--foreground)] no-underline transition duration-200 hover:bg-white"
+              >
+                View demo
+              </a>
+            </div>
 
-            <p className="text-center text-xs text-[var(--muted)]/80">Secure checkout via Stripe.</p>
+            <p className="text-center text-xs text-[var(--muted)]/80">Completely optional.</p>
           </Card>
         </div>
       </div>
