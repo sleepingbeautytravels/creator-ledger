@@ -199,6 +199,9 @@ export default function HomePage() {
 
       <section className="space-y-6 pb-8 text-center">
         <h2 className="text-4xl font-semibold text-[var(--foreground)]">A calmer way to track creator finances.</h2>
+        <p className="mx-auto max-w-2xl text-[15px] leading-7 text-[var(--muted)]">
+          A simple record of your work — kept clearly, carried with you, and ready when needed.
+        </p>
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
           <DarkCtaLink href="/auth">Start tracking</DarkCtaLink>
           <Link
