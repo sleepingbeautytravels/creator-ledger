@@ -4,10 +4,10 @@ type MonthlyNoteCardProps = {
   income: number;
   expense: number;
   gifted: number;
-  netProfit: number;
+  netPosition: number;
 };
 
-function getMonthlyNote({ income, expense, gifted, netProfit }: MonthlyNoteCardProps) {
+function getMonthlyNote({ income, expense, gifted, netPosition }: MonthlyNoteCardProps) {
   const hasTransactions = income > 0 || expense > 0 || gifted > 0;
   const giftedShare = income + gifted > 0 ? gifted / (income + gifted) : 0;
   const expenseRatio = income > 0 ? expense / income : expense > 0 ? Infinity : 0;
@@ -40,11 +40,11 @@ function getMonthlyNote({ income, expense, gifted, netProfit }: MonthlyNoteCardP
     return "Costs are currently running ahead of income. Keeping a close eye on spend may help steady your margin as the month unfolds.";
   }
 
-  if (netProfit > 0 && gifted > 0) {
+  if (netPosition > 0 && gifted > 0) {
     return "A balanced month so far. Income is comfortably ahead of expenses, with gifted work complementing your overall activity.";
   }
 
-  if (netProfit > 0) {
+  if (netPosition > 0) {
     return "The month is currently in positive balance, with income ahead of costs. Continued tracking will help keep that picture clear.";
   }
 

@@ -1,20 +1,27 @@
 import { BrandSourceSummary } from "@/components/brand-source-summary";
+import { BrandSourceDetail } from "@/components/brand-source-detail";
 import { Card } from "@/components/card";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { CsvExportButton } from "@/components/csv-export-button";
+import { PreviousPeriodComparison } from "@/components/previous-period-comparison";
+import { SummaryExportButton } from "@/components/summary-export-button";
 import { TransactionFilters } from "@/components/transaction-filters";
 import { TransactionInsightSummary } from "@/components/transaction-insight-summary";
 import { TransactionForm } from "@/components/transaction-form";
 import { TransactionsTable } from "@/components/transactions-table";
 import { TopSourceInsights } from "@/components/top-source-insights";
 import { getTransactionDateRange, getTransactions } from "@/lib/transactions/queries";
+import { getPreviousPeriodRange } from "@/lib/transactions/periods";
 import { getCurrentMonthValue } from "@/lib/utils";
+import { YearlyBreakdown } from "@/components/yearly-breakdown";
 
 type TransactionsPageProps = {
   searchParams: Promise<{
     month?: string;
     from?: string;
     to?: string;
+    year?: string;
+    brand?: string;
     type?: "income" | "expense" | "gifted" | "all";
     error?: string;
     success?: string;
@@ -24,18 +31,34 @@ type TransactionsPageProps = {
 export default async function TransactionsPage({ searchParams }: TransactionsPageProps) {
   const params = await searchParams;
   const month = params.month ?? getCurrentMonthValue();
+  const yearRange =
+    params.year && !params.from && !params.to
+      ? { from: `${params.year}-01-01`, to: `${params.year}-12-31` }
+      : {};
   const { start, end } = getTransactionDateRange({
     month,
-    from: params.from,
-    to: params.to
+    from: params.from ?? yearRange.from,
+    to: params.to ?? yearRange.to
   });
   const type = params.type ?? "all";
   const transactions = await getTransactions({ from: start, to: end, type });
+  const previousRange = getPreviousPeriodRange(start, end);
+  const previousTransactions = await getTransactions({
+    from: previousRange.start,
+    to: previousRange.end,
+    type
+  });
+  const selectedYear = params.year ?? start.slice(0, 4);
   const filterParams = new URLSearchParams();
   filterParams.set("from", start);
   filterParams.set("to", end);
   filterParams.set("type", type);
+  if (params.year) {
+    filterParams.set("year", params.year);
+  }
   const returnTo = `/transactions?${filterParams.toString()}`;
+  const currentTotals = getTotalsForComparison(transactions);
+  const previousTotals = getTotalsForComparison(previousTransactions);
 
   return (
     <div className="space-y-10 sm:space-y-12">
@@ -76,8 +99,11 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
             <p className="text-sm text-[var(--muted)]">Filter by date range and transaction type.</p>
           </div>
           <div className="flex flex-col gap-3 xl:items-end">
-            <TransactionFilters from={start} to={end} type={type} />
-            <CsvExportButton transactions={transactions} from={start} to={end} />
+            <TransactionFilters from={start} to={end} type={type} year={params.year} />
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <CsvExportButton transactions={transactions} from={start} to={end} />
+              <SummaryExportButton transactions={transactions} from={start} to={end} />
+            </div>
           </div>
         </div>
 
@@ -86,11 +112,36 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 
       <TransactionInsightSummary transactions={transactions} />
 
+      <PreviousPeriodComparison current={currentTotals} previous={previousTotals} />
+
       <TopSourceInsights transactions={transactions} />
 
-      <BrandSourceSummary transactions={transactions} />
+      <BrandSourceSummary transactions={transactions} returnTo={returnTo} />
+
+      <BrandSourceDetail brand={params.brand} transactions={transactions} />
 
       <CategoryBreakdown transactions={transactions} />
+
+      <YearlyBreakdown year={selectedYear} transactions={transactions} />
     </div>
   );
+}
+
+function getTotalsForComparison(transactions: Awaited<ReturnType<typeof getTransactions>>) {
+  const income = transactions
+    .filter((transaction) => transaction.type === "income")
+    .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+  const expense = transactions
+    .filter((transaction) => transaction.type === "expense")
+    .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+  const gifted = transactions
+    .filter((transaction) => transaction.type === "gifted")
+    .reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+
+  return {
+    income,
+    expense,
+    gifted,
+    netPosition: income - expense + gifted
+  };
 }

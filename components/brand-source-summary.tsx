@@ -6,6 +6,7 @@ type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
 
 type BrandSourceSummaryProps = {
   transactions: Transaction[];
+  returnTo?: string;
 };
 
 type BrandSummary = {
@@ -53,7 +54,7 @@ function getBrandSummaries(transactions: Transaction[]) {
   return Object.values(summaries).sort((a, b) => b.overallValue - a.overallValue);
 }
 
-export function BrandSourceSummary({ transactions }: BrandSourceSummaryProps) {
+export function BrandSourceSummary({ transactions, returnTo = "/transactions" }: BrandSourceSummaryProps) {
   const summaries = getBrandSummaries(transactions);
 
   return (
@@ -85,7 +86,14 @@ export function BrandSourceSummary({ transactions }: BrandSourceSummaryProps) {
               <tbody className="divide-y divide-[rgba(120,104,90,0.08)]">
                 {summaries.map((summary) => (
                   <tr key={summary.brandOrSource} className="text-[var(--foreground)]">
-                    <td className="px-5 py-4 font-medium">{summary.brandOrSource}</td>
+                    <td className="px-5 py-4 font-medium">
+                      <a
+                        href={`${returnTo}&brand=${encodeURIComponent(summary.brandOrSource)}`}
+                        className="underline decoration-[rgba(120,104,90,0.25)] underline-offset-4 transition hover:decoration-[rgba(120,104,90,0.7)]"
+                      >
+                        {summary.brandOrSource}
+                      </a>
+                    </td>
                     <td className="px-5 py-4">{formatCurrency(summary.income)}</td>
                     <td className="px-5 py-4">{formatCurrency(summary.gifted)}</td>
                     <td className="px-5 py-4 text-[var(--muted)]">{formatCurrency(summary.expenses)}</td>

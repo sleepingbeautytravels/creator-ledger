@@ -1,30 +1,51 @@
 import { Card } from "@/components/card";
 import { MonthlyNoteCard } from "@/components/monthly-note-card";
 import { PaidVsGiftedCard } from "@/components/paid-vs-gifted-card";
+import { RangeShortcuts } from "@/components/range-shortcuts";
 import { SummaryCard } from "@/components/summary-card";
 import { getDashboardSummary } from "@/lib/transactions/queries";
-import { formatMonthLabel } from "@/lib/utils";
+import { formatRangeHeading } from "@/lib/transactions/periods";
+import { getCurrentMonthValue } from "@/lib/utils";
 
-export default async function DashboardPage() {
-  const summary = await getDashboardSummary();
+type DashboardPageProps = {
+  searchParams: Promise<{
+    from?: string;
+    to?: string;
+    range?: string;
+  }>;
+};
+
+export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+  const params = await searchParams;
+  const summary = await getDashboardSummary({
+    month: getCurrentMonthValue(),
+    from: params.from,
+    to: params.to
+  });
+  const heading = formatRangeHeading(summary.start, summary.end, params.range);
 
   return (
     <div className="space-y-12 sm:space-y-14">
       <section className="space-y-5">
         <p className="text-xs font-normal uppercase tracking-[0.28em] text-[var(--muted)]/75">OVERVIEW</p>
         <h1 className="text-4xl font-semibold text-[var(--foreground)] sm:text-5xl">
-          {formatMonthLabel(summary.month)}
+          {heading}
         </h1>
         <p className="max-w-3xl text-[15px] leading-7 text-[var(--muted)]/88">
-          A clear snapshot of paid work, operational costs, gifted value, and net profit for the current month.
+          A clear snapshot of paid work, operational costs, gifted value, and net position for the selected period.
         </p>
+        <RangeShortcuts basePath="/dashboard" from={summary.start} to={summary.end} />
       </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <SummaryCard label="Total income" value={summary.income} />
         <SummaryCard label="Total expenses" value={summary.expense} />
         <SummaryCard label="Total gifted value" value={summary.gifted} />
-        <SummaryCard label="Net profit" value={summary.netProfit} />
+        <SummaryCard
+          label="Net position"
+          value={summary.netPosition}
+          helperText="Income minus expenses, plus gifted value."
+        />
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
@@ -33,7 +54,7 @@ export default async function DashboardPage() {
           income={summary.income}
           expense={summary.expense}
           gifted={summary.gifted}
-          netProfit={summary.netProfit}
+          netPosition={summary.netPosition}
         />
       </section>
 

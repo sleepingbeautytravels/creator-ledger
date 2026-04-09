@@ -50,14 +50,25 @@ export async function getCurrentUser() {
   return user;
 }
 
-export async function getDashboardSummary(month = getCurrentMonthValue()) {
+function getTotals(transactions: TransactionRow[]) {
+  return transactions.reduce(
+    (summary: TransactionTotals, transaction) => {
+      const transactionType = transaction.type as keyof TransactionTotals;
+      summary[transactionType] += Number(transaction.amount);
+      return summary;
+    },
+    { income: 0, expense: 0, gifted: 0 } as TransactionTotals
+  );
+}
+
+export async function getDashboardSummary(filters: TransactionFilter = {}) {
   const supabase = await createClient();
-  const normalizedMonth = normalizeMonth(month);
-  const { start, end } = getMonthRange(normalizedMonth);
+  const normalizedMonth = normalizeMonth(filters.month);
+  const { start, end } = getTransactionDateRange({ ...filters, month: normalizedMonth });
 
   const { data, error } = await supabase
     .from("transactions")
-    .select("amount, type")
+    .select("*")
     .gte("date", start)
     .lte("date", end);
 
@@ -66,22 +77,16 @@ export async function getDashboardSummary(month = getCurrentMonthValue()) {
   }
 
   const transactions: TransactionRow[] = data ?? [];
-
-  const totals = transactions.reduce(
-    (summary: TransactionTotals, transaction) => {
-      const transactionType = transaction.type as keyof TransactionTotals;
-      summary[transactionType] += Number(transaction.amount);
-      return summary;
-    },
-    { income: 0, expense: 0, gifted: 0 } as TransactionTotals
-  );
+  const totals = getTotals(transactions);
 
   return {
     month: normalizedMonth,
+    start,
+    end,
     income: totals.income,
     expense: totals.expense,
     gifted: totals.gifted,
-    netProfit: totals.income - totals.expense
+    netPosition: totals.income - totals.expense + totals.gifted
   };
 }
 

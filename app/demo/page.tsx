@@ -8,7 +8,7 @@ const demoSummary = {
   income: 3200,
   expense: 450,
   gifted: 1100,
-  netProfit: 2750
+  netPosition: 3850
 };
 
 export default function DemoPage() {
@@ -46,7 +46,11 @@ export default function DemoPage() {
           <SummaryCard label="Total income" value={demoSummary.income} />
           <SummaryCard label="Total expenses" value={demoSummary.expense} />
           <SummaryCard label="Total gifted value" value={demoSummary.gifted} />
-          <SummaryCard label="Net profit" value={demoSummary.netProfit} />
+          <SummaryCard
+            label="Net position"
+            value={demoSummary.netPosition}
+            helperText="Income minus expenses, plus gifted value."
+          />
         </section>
 
         <section className="grid gap-4 md:grid-cols-2">
@@ -55,7 +59,7 @@ export default function DemoPage() {
             income={demoSummary.income}
             expense={demoSummary.expense}
             gifted={demoSummary.gifted}
-            netProfit={demoSummary.netProfit}
+            netPosition={demoSummary.netPosition}
           />
         </section>
 
