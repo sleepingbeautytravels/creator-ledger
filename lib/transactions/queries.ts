@@ -90,6 +90,20 @@ export async function getDashboardSummary(filters: TransactionFilter = {}) {
   };
 }
 
+export async function hasTransactions() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("id")
+    .limit(1);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data ?? []).length > 0;
+}
+
 export async function getTransactions(filters: TransactionFilter = {}) {
   const supabase = await createClient();
   const type = normalizeType(filters.type);

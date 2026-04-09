@@ -5,12 +5,13 @@ import { CategoryBreakdown } from "@/components/category-breakdown";
 import { CsvExportButton } from "@/components/csv-export-button";
 import { PreviousPeriodComparison } from "@/components/previous-period-comparison";
 import { SummaryExportButton } from "@/components/summary-export-button";
+import { OnboardingEmptyState } from "@/components/onboarding-empty-state";
 import { TransactionFilters } from "@/components/transaction-filters";
 import { TransactionInsightSummary } from "@/components/transaction-insight-summary";
 import { TransactionForm } from "@/components/transaction-form";
 import { TransactionsTable } from "@/components/transactions-table";
 import { TopSourceInsights } from "@/components/top-source-insights";
-import { getTransactionDateRange, getTransactions } from "@/lib/transactions/queries";
+import { getTransactionDateRange, getTransactions, hasTransactions } from "@/lib/transactions/queries";
 import { getPreviousPeriodRange } from "@/lib/transactions/periods";
 import { getCurrentMonthValue } from "@/lib/utils";
 import { YearlyBreakdown } from "@/components/yearly-breakdown";
@@ -42,6 +43,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
   });
   const type = params.type ?? "all";
   const transactions = await getTransactions({ from: start, to: end, type });
+  const hasAnyTransactions = await hasTransactions();
   const previousRange = getPreviousPeriodRange(start, end);
   const previousTransactions = await getTransactions({
     from: previousRange.start,
@@ -73,7 +75,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
         </p>
       </section>
 
-      <Card className="space-y-6">
+      <Card id="add-transaction" className="space-y-6">
         <div className="space-y-1.5">
           <h2 className="text-xl font-semibold text-[var(--foreground)]">Add a transaction</h2>
           <p className="text-sm text-[var(--muted)]">New entries appear in your dashboard automatically.</p>
@@ -107,22 +109,35 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
           </div>
         </div>
 
-        <TransactionsTable transactions={transactions} returnTo={returnTo} />
+        {!hasAnyTransactions ? (
+          <OnboardingEmptyState
+            heading="No entries yet."
+            body="Add your first transaction to start building a calmer, clearer view of your creator finances."
+            ctaLabel="Add transaction"
+            href="#add-transaction"
+          />
+        ) : (
+          <TransactionsTable transactions={transactions} returnTo={returnTo} />
+        )}
       </Card>
 
-      <TransactionInsightSummary transactions={transactions} />
+      {hasAnyTransactions ? (
+        <>
+          <TransactionInsightSummary transactions={transactions} />
 
-      <PreviousPeriodComparison current={currentTotals} previous={previousTotals} />
+          <PreviousPeriodComparison current={currentTotals} previous={previousTotals} />
 
-      <TopSourceInsights transactions={transactions} />
+          <TopSourceInsights transactions={transactions} />
 
-      <BrandSourceSummary transactions={transactions} returnTo={returnTo} />
+          <BrandSourceSummary transactions={transactions} returnTo={returnTo} />
 
-      <BrandSourceDetail brand={params.brand} transactions={transactions} />
+          <BrandSourceDetail brand={params.brand} transactions={transactions} />
 
-      <CategoryBreakdown transactions={transactions} />
+          <CategoryBreakdown transactions={transactions} />
 
-      <YearlyBreakdown year={selectedYear} transactions={transactions} />
+          <YearlyBreakdown year={selectedYear} transactions={transactions} />
+        </>
+      ) : null}
     </div>
   );
 }
