@@ -13,19 +13,19 @@ function getMonthlyNote({ income, expense, gifted, netPosition }: MonthlyNoteCar
   const expenseRatio = income > 0 ? expense / income : expense > 0 ? Infinity : 0;
 
   if (!hasTransactions) {
-    return "Once you add transactions, your monthly note will appear here.";
+    return "Once you add transactions, your period note will appear here.";
   }
 
   if (income === 0) {
     if (gifted > 0) {
-      return "You are in an early tracking phase this month, with activity currently leaning toward gifted work. Continue logging outcomes to build a clearer picture.";
+      return "You are in an early tracking phase for this period, with activity currently leaning toward gifted work. Continue logging outcomes to build a clearer picture.";
     }
 
-    return "You are in an early tracking phase this month. Continue logging activity to build a clearer picture.";
+    return "You are in an early tracking phase for this period. Continue logging activity to build a clearer picture.";
   }
 
   if (giftedShare >= 0.6 && gifted > 0) {
-    return "This month leans toward gifted collaborations. Tracking outcomes alongside value will help you assess long-term impact.";
+    return "This period leans toward gifted collaborations. Tracking outcomes alongside value will help you assess long-term impact.";
   }
 
   if (expenseRatio >= 0.8 && expenseRatio <= 1.1) {
@@ -41,14 +41,14 @@ function getMonthlyNote({ income, expense, gifted, netPosition }: MonthlyNoteCar
   }
 
   if (netPosition > 0 && gifted > 0) {
-    return "A balanced month so far. Income is comfortably ahead of expenses, with gifted work complementing your overall activity.";
+    return "A balanced period overall. Income is comfortably ahead of expenses, with gifted work complementing your overall activity.";
   }
 
   if (netPosition > 0) {
-    return "The month is currently in positive balance, with income ahead of costs. Continued tracking will help keep that picture clear.";
+    return "This period is currently in positive balance, with income ahead of costs. Continued tracking will help keep that picture clear.";
   }
 
-  return "The month is still taking shape, with activity spread across several entry types. Continued tracking will help the picture become clearer.";
+  return "This period is still taking shape, with activity spread across several entry types. Continued tracking will help the picture become clearer.";
 }
 
 export function MonthlyNoteCard(props: MonthlyNoteCardProps) {
@@ -56,7 +56,7 @@ export function MonthlyNoteCard(props: MonthlyNoteCardProps) {
 
   return (
     <Card className="space-y-3.5">
-      <p className="text-sm font-normal tracking-[0.01em] text-[var(--muted)]/85">Monthly note</p>
+      <p className="text-sm font-normal tracking-[0.01em] text-[var(--muted)]/85">Period note</p>
       <p className="max-w-2xl text-[15px] leading-7 text-[color:rgba(32,28,26,0.82)]">{note}</p>
     </Card>
   );

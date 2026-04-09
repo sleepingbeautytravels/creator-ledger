@@ -31,10 +31,10 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
           <Card className="space-y-4">
             <div className="space-y-2">
               <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
-                Support Creator Ledger
+                Support this project
               </h2>
               <p className="max-w-md text-sm leading-6 text-[var(--muted)]">
-                If this has been helpful, you can support its quiet continuation here.
+                If Creator Ledger has been helpful, you can support its continued development here.
               </p>
             </div>
 

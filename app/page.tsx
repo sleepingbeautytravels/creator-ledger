@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/card";
+import { DarkCtaLink } from "@/components/dark-cta-link";
 import { SupportButton } from "@/components/support-button";
 
 const proofPoints = [
@@ -19,7 +20,7 @@ const valueCards = [
   },
   {
     title: "Flexible date ranges",
-    body: "Review this month, year to date, all time, or a custom window."
+    body: "Review any period, from year to date to all time or a custom window."
   },
   {
     title: "Clean exports",
@@ -59,12 +60,7 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/auth"
-              className="inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-medium text-white no-underline transition hover:bg-[#222222]"
-            >
-              Start tracking
-            </Link>
+            <DarkCtaLink href="/auth">Start tracking</DarkCtaLink>
             <Link
               href="/demo"
               className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-5 py-3 text-sm text-[var(--foreground)] no-underline transition hover:bg-white"
@@ -176,7 +172,7 @@ export default function HomePage() {
         <Card className="mx-auto max-w-2xl space-y-4 text-center">
           <h2 className="text-3xl font-semibold text-[var(--foreground)]">Support this project</h2>
           <p className="mx-auto max-w-xl text-sm leading-6 text-[var(--muted)]">
-            If this has been helpful, you can support its quiet continuation here.
+            If Creator Ledger has been helpful, you can support its continued development here.
           </p>
           <div className="flex justify-center">
             <SupportButton />
@@ -187,12 +183,7 @@ export default function HomePage() {
       <section className="space-y-6 pb-8 text-center">
         <h2 className="text-4xl font-semibold text-[var(--foreground)]">A calmer way to track creator finances.</h2>
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
-          <Link
-            href="/auth"
-            className="inline-flex items-center justify-center rounded-full bg-black px-5 py-3 text-sm font-medium text-white no-underline transition hover:bg-[#222222]"
-          >
-            Start tracking
-          </Link>
+          <DarkCtaLink href="/auth">Start tracking</DarkCtaLink>
           <Link
             href="/demo"
             className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-5 py-3 text-sm text-[var(--foreground)] no-underline transition hover:bg-white"

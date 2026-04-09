@@ -28,11 +28,11 @@ function getInsight(income: number, gifted: number) {
   const paidShare = total > 0 ? income / total : 0;
 
   if (paidShare >= 0.7) {
-    return "Your work is primarily paid this month.";
+    return "Your work is primarily paid in this period.";
   }
 
   if (paidShare <= 0.3) {
-    return "This month leans toward gifted collaborations.";
+    return "This period leans toward gifted collaborations.";
   }
 
   return "A balanced mix of paid and gifted work.";
