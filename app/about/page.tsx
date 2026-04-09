@@ -16,6 +16,10 @@ const sections = [
     body: "It’s designed for creators who want a private, practical way to understand what their work is actually worth — across paid work, gifted value, and the costs behind it."
   },
   {
+    heading: "Founder note",
+    body: "Creator Ledger was built by Tessa Zhang — a creator with a CPA background, trying to make the financial side of creative work feel clearer and lighter."
+  },
+  {
     heading: "Free to use",
     body: "Creator Ledger is free to use. If it’s been helpful, you’re welcome to support the project."
   }
@@ -48,6 +52,16 @@ export default function AboutPage() {
           <Card key={section.heading} className="space-y-3">
             <h2 className="text-2xl font-medium text-[var(--foreground)]">{section.heading}</h2>
             <p className="max-w-3xl text-[15px] leading-7 text-[var(--muted)]">{section.body}</p>
+            {section.heading === "Founder note" ? (
+              <a
+                href="https://www.instagram.com/sleepingbeautytravels/"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex pt-1 text-sm text-[var(--muted)] underline decoration-[rgba(120,104,90,0.25)] underline-offset-4 transition hover:text-[var(--foreground)] hover:decoration-[rgba(120,104,90,0.7)]"
+              >
+                Visit founder profile
+              </a>
+            ) : null}
             {section.heading === "Free to use" ? (
               <div className="pt-2">
                 <SupportButton />

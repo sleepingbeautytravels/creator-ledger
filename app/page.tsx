@@ -210,10 +210,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-[var(--border)] pt-6 text-center text-sm text-[var(--muted)]">
-        <Link href="/about" className="transition hover:text-[var(--foreground)]">
-          About Creator Ledger
-        </Link>
+      <footer className="space-y-3 border-t border-[var(--border)] pt-6 text-center text-sm text-[var(--muted)]">
+        <nav className="flex justify-center gap-5">
+          <Link href="/about" className="transition hover:text-[var(--foreground)]">
+            About
+          </Link>
+          <Link href="/demo" className="transition hover:text-[var(--foreground)]">
+            Demo
+          </Link>
+          <a
+            href="https://buymeacoffee.com/sleepingbeautytravels"
+            target="_blank"
+            rel="noreferrer"
+            className="transition hover:text-[var(--foreground)]"
+          >
+            Support
+          </a>
+        </nav>
+        <p className="text-xs text-[var(--muted)]/80">Built with care for creators.</p>
       </footer>
     </main>
   );
