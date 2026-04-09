@@ -17,10 +17,11 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
         <section className="flex flex-col justify-center space-y-7 py-4 lg:py-10">
           <p className="text-xs uppercase tracking-[0.28em] text-[var(--muted)]">CREATOR LEDGER</p>
           <h1 className="max-w-2xl text-5xl font-semibold leading-[1.02] text-[var(--foreground)] sm:text-6xl">
-            A calm home for creator income, expenses, and gifted value.
+            A calm financial lens for creators.
           </h1>
           <p className="max-w-xl text-lg leading-8 text-[var(--muted)]">
-            Track the money behind your content in one clear, private space.
+            Creator Ledger brings quiet clarity to your income, expenses, and gifted work — so you
+            can understand what your work is truly worth.
           </p>
         </section>
 
@@ -33,7 +34,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
                 Support Creator Ledger
               </h2>
               <p className="max-w-md text-sm leading-6 text-[var(--muted)]">
-                If Creator Ledger has been helpful, you can support its ongoing development here.
+                If this has been helpful, you can support its quiet continuation here.
               </p>
             </div>
 
