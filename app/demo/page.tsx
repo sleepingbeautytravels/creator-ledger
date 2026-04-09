@@ -33,25 +33,19 @@ export default function DemoPage() {
             </div>
           </div>
 
-          <a
-            href="https://buy.stripe.com/28E9AT0143GneVn43J2VG00"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#000000",
-              color: "#ffffff",
-              padding: "12px 20px",
-              borderRadius: "9999px",
-              fontWeight: 600,
-              fontSize: "14px",
-              textDecoration: "none"
-            }}
-          >
-            Get access for $9
-          </a>
+          <div className="space-y-2 pt-1 sm:pt-2">
+            <a
+              href="https://buymeacoffee.com/sleepingbeautytravels"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-5 py-3 text-sm font-medium text-white no-underline transition duration-300 hover:bg-neutral-800"
+            >
+              Support Creator Ledger
+            </a>
+            <p className="text-center text-xs text-[var(--muted)]/80">
+              Completely optional — if you find this helpful.
+            </p>
+          </div>
         </section>
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
