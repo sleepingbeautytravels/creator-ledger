@@ -11,7 +11,7 @@ export function TransactionFilters({ month, type }: TransactionFiltersProps) {
     "w-full rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[#8b7868]";
 
   return (
-    <form className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+    <form action="/transactions" method="get" className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
       <label className="space-y-2 text-sm text-[var(--muted)]">
         <span>Month</span>
         <input

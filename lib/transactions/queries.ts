@@ -15,6 +15,14 @@ type TransactionTotals = {
 
 type TransactionRow = Database["public"]["Tables"]["transactions"]["Row"];
 
+function normalizeMonth(month?: string) {
+  return /^\d{4}-\d{2}$/.test(month ?? "") ? month! : getCurrentMonthValue();
+}
+
+function normalizeType(type?: TransactionType | "all") {
+  return type && ["income", "expense", "gifted", "all"].includes(type) ? type : "all";
+}
+
 export async function getCurrentUser() {
   const supabase = await createClient();
   const {
@@ -26,7 +34,8 @@ export async function getCurrentUser() {
 
 export async function getDashboardSummary(month = getCurrentMonthValue()) {
   const supabase = await createClient();
-  const { start, end } = getMonthRange(month);
+  const normalizedMonth = normalizeMonth(month);
+  const { start, end } = getMonthRange(normalizedMonth);
 
   const { data, error } = await supabase
     .from("transactions")
@@ -50,7 +59,7 @@ export async function getDashboardSummary(month = getCurrentMonthValue()) {
   );
 
   return {
-    month,
+    month: normalizedMonth,
     income: totals.income,
     expense: totals.expense,
     gifted: totals.gifted,
@@ -60,7 +69,8 @@ export async function getDashboardSummary(month = getCurrentMonthValue()) {
 
 export async function getTransactions(filters: TransactionFilter = {}) {
   const supabase = await createClient();
-  const month = filters.month ?? getCurrentMonthValue();
+  const month = normalizeMonth(filters.month);
+  const type = normalizeType(filters.type);
   const { start, end } = getMonthRange(month);
 
   let query = supabase
@@ -71,8 +81,8 @@ export async function getTransactions(filters: TransactionFilter = {}) {
     .order("date", { ascending: false })
     .order("created_at", { ascending: false });
 
-  if (filters.type && filters.type !== "all") {
-    query = query.eq("type", filters.type);
+  if (type !== "all") {
+    query = query.eq("type", type);
   }
 
   const { data, error } = await query;
@@ -81,5 +91,5 @@ export async function getTransactions(filters: TransactionFilter = {}) {
     throw new Error(error.message);
   }
 
-  return data;
+  return (data ?? []) as TransactionRow[];
 }

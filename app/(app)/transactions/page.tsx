@@ -19,6 +19,10 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
   const month = params.month ?? getCurrentMonthValue();
   const type = params.type ?? "all";
   const transactions = await getTransactions({ month, type });
+  const filterParams = new URLSearchParams();
+  filterParams.set("month", month);
+  filterParams.set("type", type);
+  const returnTo = `/transactions?${filterParams.toString()}`;
 
   return (
     <div className="space-y-10 sm:space-y-12">
@@ -61,7 +65,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
           <TransactionFilters month={month} type={type} />
         </div>
 
-        <TransactionsTable transactions={transactions} />
+        <TransactionsTable transactions={transactions} returnTo={returnTo} />
       </Card>
     </div>
   );
