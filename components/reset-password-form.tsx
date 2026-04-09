@@ -14,17 +14,56 @@ export function ResetPasswordForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isRecoveryReady, setIsRecoveryReady] = useState(false);
+  const [isCheckingRecovery, setIsCheckingRecovery] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
 
     const initializeRecovery = async () => {
-      const {
-        data: { session }
-      } = await supabase.auth.getSession();
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const queryParams = new URLSearchParams(window.location.search);
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
+      const recoveryType = hashParams.get("type");
+      const code = queryParams.get("code");
 
-      if (session && isMounted) {
-        setIsRecoveryReady(true);
+      if (accessToken && refreshToken && recoveryType === "recovery") {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken
+        });
+
+        if (error) {
+          if (isMounted) {
+            setErrorMessage("This password reset link is invalid or has expired.");
+          }
+        } else if (isMounted) {
+          setIsRecoveryReady(true);
+          window.history.replaceState({}, "", "/auth/reset-password");
+        }
+      } else if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+        if (error) {
+          if (isMounted) {
+            setErrorMessage("This password reset link is invalid or has expired.");
+          }
+        } else if (isMounted) {
+          setIsRecoveryReady(true);
+          window.history.replaceState({}, "", "/auth/reset-password");
+        }
+      } else {
+        const {
+          data: { session }
+        } = await supabase.auth.getSession();
+
+        if (session && isMounted) {
+          setIsRecoveryReady(true);
+        }
+      }
+
+      if (isMounted) {
+        setIsCheckingRecovery(false);
       }
     };
 
@@ -96,7 +135,11 @@ export function ResetPasswordForm() {
         </div>
       ) : null}
 
-      {!isRecoveryReady ? (
+      {isCheckingRecovery ? (
+        <div className="rounded-[1.25rem] bg-[rgba(246,241,234,0.88)] px-4 py-3 text-sm text-[var(--muted)]">
+          Checking your reset link...
+        </div>
+      ) : !isRecoveryReady ? (
         <div className="rounded-[1.25rem] bg-[rgba(246,241,234,0.88)] px-4 py-3 text-sm text-[var(--muted)]">
           Open the password reset link from your email to set a new password.
         </div>
