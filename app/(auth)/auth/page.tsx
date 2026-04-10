@@ -34,7 +34,7 @@ export default async function AuthPage({ searchParams }: AuthPageProps) {
                 Support this project
               </h2>
               <p className="max-w-md text-sm leading-6 text-[var(--muted)]">
-                If Creator Ledger has been helpful, you can support its continued development here.
+                If Creator Ledger has been helpful, you’re welcome to support its continued development.
               </p>
             </div>
 

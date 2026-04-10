@@ -186,11 +186,12 @@ export default function HomePage() {
         <Card className="mx-auto max-w-2xl space-y-4 text-center">
           <h2 className="text-3xl font-semibold text-[var(--foreground)]">Support this project</h2>
           <p className="mx-auto max-w-xl text-sm leading-6 text-[var(--muted)]">
-            If Creator Ledger has been helpful, you can support its continued development here.
+            If Creator Ledger has been helpful, you’re welcome to support its continued development.
           </p>
           <div className="flex justify-center">
             <SupportButton />
           </div>
+          <p className="text-xs text-[var(--muted)]/75">Built slowly, and shared openly.</p>
           <p className="text-xs text-[var(--muted)]/80">
             Free to use. If it’s helpful, you can support the project.
           </p>

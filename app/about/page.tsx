@@ -21,7 +21,7 @@ const sections = [
   },
   {
     heading: "Free to use",
-    body: "Creator Ledger is free to use. If it’s been helpful, you’re welcome to support the project."
+    body: "Creator Ledger is free to use. If Creator Ledger has been helpful, you’re welcome to support its continued development."
   }
 ];
 
