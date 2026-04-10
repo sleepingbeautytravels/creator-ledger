@@ -4,7 +4,6 @@ import { Card } from "@/components/card";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { CsvExportButton } from "@/components/csv-export-button";
 import { PreviousPeriodComparison } from "@/components/previous-period-comparison";
-import { SummaryExportButton } from "@/components/summary-export-button";
 import { OnboardingEmptyState } from "@/components/onboarding-empty-state";
 import { TransactionFilters } from "@/components/transaction-filters";
 import { TransactionInsightSummary } from "@/components/transaction-insight-summary";
@@ -55,7 +54,13 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
     type,
     platform
   });
-  const selectedYear = params.year ?? start.slice(0, 4);
+  const selectedYear = getSelectedYear({
+    explicitYear: params.year,
+    range: params.range,
+    start,
+    end,
+    transactions
+  });
   const filterParams = new URLSearchParams();
   filterParams.set("from", start);
   filterParams.set("to", end);
@@ -125,7 +130,6 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
             />
             <div className="flex flex-col gap-3 sm:flex-row">
               <CsvExportButton transactions={transactions} from={start} to={end} range={params.range} />
-              <SummaryExportButton transactions={transactions} from={start} to={end} range={params.range} />
             </div>
           </div>
         </div>
@@ -180,4 +184,33 @@ function getTotalsForComparison(transactions: Awaited<ReturnType<typeof getTrans
     gifted,
     netPosition: income - expense + gifted
   };
+}
+
+function getSelectedYear({
+  explicitYear,
+  range,
+  start,
+  end,
+  transactions
+}: {
+  explicitYear?: string;
+  range?: string;
+  start: string;
+  end: string;
+  transactions: Awaited<ReturnType<typeof getTransactions>>;
+}) {
+  if (explicitYear) {
+    return explicitYear;
+  }
+
+  if (range === "all-time") {
+    const latestTransactionYear = transactions
+      .map((transaction) => transaction.date.slice(0, 4))
+      .sort()
+      .at(-1);
+
+    return latestTransactionYear ?? new Date().getFullYear().toString();
+  }
+
+  return end.slice(0, 4) || start.slice(0, 4);
 }
