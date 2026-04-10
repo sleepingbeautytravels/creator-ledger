@@ -7,6 +7,7 @@ type OnboardingEmptyStateProps = {
   secondaryLine?: string;
   ctaLabel: string;
   href: string;
+  helperLine?: string;
   className?: string;
 };
 
@@ -16,6 +17,7 @@ export function OnboardingEmptyState({
   secondaryLine,
   ctaLabel,
   href,
+  helperLine,
   className = ""
 }: OnboardingEmptyStateProps) {
   return (
@@ -29,6 +31,9 @@ export function OnboardingEmptyState({
       </div>
 
       <DarkCtaLink href={href}>{ctaLabel}</DarkCtaLink>
+      {helperLine ? (
+        <p className="text-sm leading-6 text-[var(--muted)]/80">{helperLine}</p>
+      ) : null}
     </Card>
   );
 }
