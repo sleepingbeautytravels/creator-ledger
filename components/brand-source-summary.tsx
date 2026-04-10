@@ -46,7 +46,9 @@ function getBrandSummaries(transactions: Transaction[]) {
     }
 
     accumulator[brandOrSource].overallValue =
-      accumulator[brandOrSource].income + accumulator[brandOrSource].gifted;
+      accumulator[brandOrSource].income -
+      accumulator[brandOrSource].expenses +
+      accumulator[brandOrSource].gifted;
 
     return accumulator;
   }, {});

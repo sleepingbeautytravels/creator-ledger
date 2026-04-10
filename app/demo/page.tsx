@@ -12,15 +12,22 @@ const demoSummary = {
 };
 
 const brandSummaries = [
-  { source: "Chanel", platform: "Instagram", income: "$1,600", gifted: "$400", overall: "$2,000" },
-  { source: "Mejuri", platform: "Instagram", income: "$900", gifted: "$500", overall: "$1,400" },
-  { source: "Travel partner", platform: "Website", income: "$700", gifted: "$200", overall: "$900" }
+  { source: "Chanel", platform: "Instagram", income: "$1,600", gifted: "$400", expenses: "$120", overall: "$1,880" },
+  { source: "Mejuri", platform: "Instagram", income: "$900", gifted: "$500", expenses: "$80", overall: "$1,320" },
+  { source: "Travel partner", platform: "Website", income: "$700", gifted: "$200", expenses: "$150", overall: "$750" },
+  { source: "Tools & hosting", platform: "Website", income: "$0", gifted: "$0", expenses: "$100", overall: "-$100" }
 ];
 
 const categorySummaries = [
-  { category: "Beauty", income: "$1,600", gifted: "$400", expenses: "$120" },
-  { category: "Jewellery", income: "$900", gifted: "$500", expenses: "$80" },
-  { category: "Travel", income: "$700", gifted: "$200", expenses: "$250" }
+  { category: "Beauty", income: "$1,600", gifted: "$400", expenses: "$120", overall: "$1,880" },
+  { category: "Jewellery", income: "$900", gifted: "$500", expenses: "$80", overall: "$1,320" },
+  { category: "Travel", income: "$700", gifted: "$200", expenses: "$150", overall: "$750" },
+  { category: "Software", income: "$0", gifted: "$0", expenses: "$100", overall: "-$100" }
+];
+
+const platformSummaries = [
+  { platform: "Instagram", income: "$2,500", gifted: "$900", expenses: "$200", overall: "$3,200" },
+  { platform: "Website", income: "$700", gifted: "$200", expenses: "$250", overall: "$650" }
 ];
 
 export default function DemoPage() {
@@ -78,8 +85,8 @@ export default function DemoPage() {
         <Card className="space-y-3.5">
           <p className="text-sm font-normal tracking-[0.01em] text-[var(--muted)]/85">Period insight</p>
           <p className="max-w-2xl text-[15px] leading-7 text-[color:rgba(32,28,26,0.82)]">
-            Income led this period, with Chanel contributing the highest paid value and Jewellery
-            adding meaningful gifted context.
+            Income led this period, with Instagram carrying most paid value and Chanel contributing
+            the strongest paid source performance.
           </p>
         </Card>
 
@@ -122,6 +129,7 @@ export default function DemoPage() {
                     <th className="px-5 py-4 font-medium">Platform</th>
                     <th className="px-5 py-4 font-medium">Income</th>
                     <th className="px-5 py-4 font-medium">Gifted value</th>
+                    <th className="px-5 py-4 font-medium">Expenses</th>
                     <th className="px-5 py-4 font-medium">Overall value</th>
                   </tr>
                 </thead>
@@ -132,6 +140,7 @@ export default function DemoPage() {
                       <td className="px-5 py-4 text-[var(--muted)]">{summary.platform}</td>
                       <td className="px-5 py-4">{summary.income}</td>
                       <td className="px-5 py-4">{summary.gifted}</td>
+                      <td className="px-5 py-4 text-[var(--muted)]">{summary.expenses}</td>
                       <td className="px-5 py-4 font-medium">{summary.overall}</td>
                     </tr>
                   ))}
@@ -158,8 +167,47 @@ export default function DemoPage() {
                 <p className="mt-3 text-sm text-[var(--muted)]">Income {summary.income}</p>
                 <p className="mt-1 text-sm text-[var(--muted)]">Gifted {summary.gifted}</p>
                 <p className="mt-1 text-sm text-[var(--muted)]">Expenses {summary.expenses}</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">Overall {summary.overall}</p>
               </div>
             ))}
+          </div>
+        </Card>
+
+        <Card className="space-y-6">
+          <div className="space-y-1.5">
+            <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
+              Platform summary
+            </h2>
+            <p className="text-sm text-[var(--muted)]">
+              A filtered view of how value is distributed across platforms.
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-[1.75rem] border border-[var(--border)] bg-[var(--surface-strong)]">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-[rgba(120,104,90,0.1)] text-left text-sm">
+                <thead className="bg-[rgba(246,241,234,0.72)] text-[var(--muted)]">
+                  <tr>
+                    <th className="px-5 py-4 font-medium">Platform</th>
+                    <th className="px-5 py-4 font-medium">Income</th>
+                    <th className="px-5 py-4 font-medium">Gifted value</th>
+                    <th className="px-5 py-4 font-medium">Expenses</th>
+                    <th className="px-5 py-4 font-medium">Overall value</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[rgba(120,104,90,0.08)]">
+                  {platformSummaries.map((summary) => (
+                    <tr key={summary.platform} className="text-[var(--foreground)]">
+                      <td className="px-5 py-4 font-medium">{summary.platform}</td>
+                      <td className="px-5 py-4">{summary.income}</td>
+                      <td className="px-5 py-4">{summary.gifted}</td>
+                      <td className="px-5 py-4 text-[var(--muted)]">{summary.expenses}</td>
+                      <td className="px-5 py-4 font-medium">{summary.overall}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </Card>
 
