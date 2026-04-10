@@ -3,6 +3,7 @@ import { BrandSourceDetail } from "@/components/brand-source-detail";
 import { Card } from "@/components/card";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { CsvExportButton } from "@/components/csv-export-button";
+import { PlatformSummary } from "@/components/platform-summary";
 import { PreviousPeriodComparison } from "@/components/previous-period-comparison";
 import { OnboardingEmptyState } from "@/components/onboarding-empty-state";
 import { TransactionFilters } from "@/components/transaction-filters";
@@ -14,7 +15,6 @@ import { getTransactionDateRange, getTransactions, hasTransactions } from "@/lib
 import { formatRangeHeading, getPreviousPeriodRange } from "@/lib/transactions/periods";
 import { getCurrentMonthValue } from "@/lib/utils";
 import { Platform } from "@/types/database";
-import { YearlyBreakdown } from "@/components/yearly-breakdown";
 
 type TransactionsPageProps = {
   searchParams: Promise<{
@@ -53,13 +53,6 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
     to: previousRange.end,
     type,
     platform
-  });
-  const selectedYear = getSelectedYear({
-    explicitYear: params.year,
-    range: params.range,
-    start,
-    end,
-    transactions
   });
   const filterParams = new URLSearchParams();
   filterParams.set("from", start);
@@ -160,7 +153,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 
           <CategoryBreakdown transactions={transactions} />
 
-          <YearlyBreakdown year={selectedYear} transactions={transactions} />
+          <PlatformSummary transactions={transactions} />
         </>
       ) : null}
     </div>
@@ -184,33 +177,4 @@ function getTotalsForComparison(transactions: Awaited<ReturnType<typeof getTrans
     gifted,
     netPosition: income - expense + gifted
   };
-}
-
-function getSelectedYear({
-  explicitYear,
-  range,
-  start,
-  end,
-  transactions
-}: {
-  explicitYear?: string;
-  range?: string;
-  start: string;
-  end: string;
-  transactions: Awaited<ReturnType<typeof getTransactions>>;
-}) {
-  if (explicitYear) {
-    return explicitYear;
-  }
-
-  if (range === "all-time") {
-    const latestTransactionYear = transactions
-      .map((transaction) => transaction.date.slice(0, 4))
-      .sort()
-      .at(-1);
-
-    return latestTransactionYear ?? new Date().getFullYear().toString();
-  }
-
-  return end.slice(0, 4) || start.slice(0, 4);
 }
