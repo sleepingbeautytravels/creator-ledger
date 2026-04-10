@@ -232,7 +232,8 @@ export default function HomePage() {
           </a>
         </nav>
         <p className="text-xs text-[var(--muted)]/80">
-          Built with care for creators. Designed for clarity, not complexity.
+          Built with care for creators. Designed for clarity, not complexity. For tax and
+          compliance matters, please consult a professional.
         </p>
       </footer>
     </main>

@@ -9,7 +9,7 @@ const sections = [
   },
   {
     heading: "Why I built it",
-    body: "I built it from a creator’s perspective, while also bringing the structure of a CPA background. I wanted something calmer, clearer, and more useful than the usual mix of notes, screenshots, and scattered spreadsheets."
+    body: "I built it from a creator’s perspective, while also bringing the structure of an accounting background. I wanted something calmer, clearer, and more useful than the usual mix of notes, screenshots, and scattered spreadsheets."
   },
   {
     heading: "Who it’s for",
@@ -17,7 +17,7 @@ const sections = [
   },
   {
     heading: "Founder note",
-    body: "Creator Ledger was built by Tessa Zhang — a creator with a CPA background, trying to make the financial side of creative work feel clearer and lighter."
+    body: "Creator Ledger was built by Tessa Zhang — a creator, with a CPA background, shaped to make the financial side of creative work feel clearer and lighter."
   },
   {
     heading: "Free to use",
@@ -53,14 +53,19 @@ export default function AboutPage() {
             <h2 className="text-2xl font-medium text-[var(--foreground)]">{section.heading}</h2>
             <p className="max-w-3xl text-[15px] leading-7 text-[var(--muted)]">{section.body}</p>
             {section.heading === "Founder note" ? (
-              <a
-                href="https://www.instagram.com/sleepingbeautytravels/"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex pt-1 text-sm text-[var(--muted)] underline decoration-[rgba(120,104,90,0.25)] underline-offset-4 transition hover:text-[var(--foreground)] hover:decoration-[rgba(120,104,90,0.7)]"
-              >
-                Visit founder profile
-              </a>
+              <>
+                <p className="max-w-3xl text-[15px] leading-7 text-[var(--muted)]">
+                  A simple tool, shaped from lived experience.
+                </p>
+                <a
+                  href="https://www.instagram.com/sleepingbeautytravels/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex pt-1 text-sm text-[var(--muted)] underline decoration-[rgba(120,104,90,0.25)] underline-offset-4 transition hover:text-[var(--foreground)] hover:decoration-[rgba(120,104,90,0.7)]"
+                >
+                  View founder profile
+                </a>
+              </>
             ) : null}
             {section.heading === "Free to use" ? (
               <div className="pt-2">
