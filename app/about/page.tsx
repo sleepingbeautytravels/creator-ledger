@@ -69,6 +69,29 @@ export default function AboutPage() {
             ) : null}
           </Card>
         ))}
+
+        <Card className="space-y-3">
+          <h2 className="text-2xl font-medium text-[var(--foreground)]">A gentle note</h2>
+          <div className="space-y-4 max-w-3xl text-[15px] leading-7 text-[var(--muted)]">
+            <p>
+              Creator Ledger is designed to bring clarity to your numbers in a simple, intuitive
+              way.
+            </p>
+            <p>
+              Some terms and categories are intentionally simplified to keep the experience calm and
+              easy to use. While the tool is informed by a CPA background, it is not a substitute
+              for formal accounting or tax advice.
+            </p>
+            <p>
+              If you’re preparing for compliance, reporting, or tax purposes, it’s always best to
+              work with a qualified bookkeeper or accountant.
+            </p>
+            <p>
+              Creator Ledger is simply a tool — the clarity it offers comes from how you choose to
+              use it.
+            </p>
+          </div>
+        </Card>
       </section>
     </main>
   );

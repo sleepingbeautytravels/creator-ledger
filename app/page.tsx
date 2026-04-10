@@ -231,7 +231,9 @@ export default function HomePage() {
             Support
           </a>
         </nav>
-        <p className="text-xs text-[var(--muted)]/80">Built with care for creators.</p>
+        <p className="text-xs text-[var(--muted)]/80">
+          Built with care for creators. Designed for clarity, not complexity.
+        </p>
       </footer>
     </main>
   );
