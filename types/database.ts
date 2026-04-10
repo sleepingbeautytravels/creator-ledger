@@ -1,4 +1,5 @@
 export type TransactionType = "income" | "expense" | "gifted";
+export type Platform = "Instagram" | "YouTube" | "TikTok" | "Website" | "Blog" | "Podcast" | "Newsletter" | "Other";
 
 export type Database = {
   public: {
@@ -11,6 +12,7 @@ export type Database = {
           amount: number;
           type: TransactionType;
           category: string;
+          platform: Platform | null;
           brand_or_source: string;
           notes: string | null;
           created_at: string;
@@ -22,6 +24,7 @@ export type Database = {
           amount: number;
           type: TransactionType;
           category: string;
+          platform?: Platform | null;
           brand_or_source: string;
           notes?: string | null;
           created_at?: string;
@@ -33,6 +36,7 @@ export type Database = {
           amount?: number;
           type?: TransactionType;
           category?: string;
+          platform?: Platform | null;
           brand_or_source?: string;
           notes?: string | null;
           created_at?: string;

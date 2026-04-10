@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { deleteTransaction, updateTransaction } from "@/app/(app)/transactions/actions";
 import { categoryPresets } from "@/lib/transactions/categories";
+import { platformOptions } from "@/lib/transactions/platforms";
 import { formatCurrency } from "@/lib/utils";
 import { Database } from "@/types/database";
 
@@ -36,6 +37,7 @@ export function TransactionsTable({ transactions, returnTo }: TransactionsTableP
               <th className="px-5 py-4 font-medium">Date</th>
               <th className="px-5 py-4 font-medium">Type</th>
               <th className="px-5 py-4 font-medium">Category</th>
+              <th className="px-5 py-4 font-medium">Platform</th>
               <th className="px-5 py-4 font-medium">Brand / Source</th>
               <th className="px-5 py-4 font-medium">Notes</th>
               <th className="px-5 py-4 font-medium">Amount</th>
@@ -49,7 +51,7 @@ export function TransactionsTable({ transactions, returnTo }: TransactionsTableP
               if (isEditing) {
                 return (
                   <tr key={transaction.id} className="align-top text-[var(--foreground)]">
-                    <td colSpan={7} className="px-5 py-5">
+                    <td colSpan={8} className="px-5 py-5">
                       <form action={updateTransaction} className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         <input type="hidden" name="id" value={transaction.id} />
                         <input type="hidden" name="returnTo" value={returnTo} />
@@ -99,6 +101,18 @@ export function TransactionsTable({ transactions, returnTo }: TransactionsTableP
                         </label>
 
                         <label className="space-y-2 text-sm text-[var(--muted)]">
+                          <span>Platform</span>
+                          <select name="platform" defaultValue={transaction.platform ?? ""} className={fieldClassName}>
+                            <option value="">Optional</option>
+                            {platformOptions.map((platform) => (
+                              <option key={platform} value={platform}>
+                                {platform}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+
+                        <label className="space-y-2 text-sm text-[var(--muted)]">
                           <span>Brand or source</span>
                           <input
                             required
@@ -144,6 +158,7 @@ export function TransactionsTable({ transactions, returnTo }: TransactionsTableP
                   </td>
                   <td className="px-5 py-4 capitalize">{transaction.type}</td>
                   <td className="px-5 py-4">{transaction.category}</td>
+                  <td className="px-5 py-4 text-[var(--muted)]">{transaction.platform || "—"}</td>
                   <td className="px-5 py-4">{transaction.brand_or_source}</td>
                   <td className="px-5 py-4 text-[var(--muted)]">{transaction.notes || "—"}</td>
                   <td className="px-5 py-4 font-medium text-[var(--foreground)]">

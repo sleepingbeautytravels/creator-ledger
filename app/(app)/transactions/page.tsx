@@ -14,6 +14,7 @@ import { TopSourceInsights } from "@/components/top-source-insights";
 import { getTransactionDateRange, getTransactions, hasTransactions } from "@/lib/transactions/queries";
 import { getPreviousPeriodRange } from "@/lib/transactions/periods";
 import { getCurrentMonthValue } from "@/lib/utils";
+import { Platform } from "@/types/database";
 import { YearlyBreakdown } from "@/components/yearly-breakdown";
 
 type TransactionsPageProps = {
@@ -24,6 +25,7 @@ type TransactionsPageProps = {
     year?: string;
     brand?: string;
     type?: "income" | "expense" | "gifted" | "all";
+    platform?: Platform | "all";
     error?: string;
     success?: string;
   }>;
@@ -42,19 +44,24 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
     to: params.to ?? yearRange.to
   });
   const type = params.type ?? "all";
-  const transactions = await getTransactions({ from: start, to: end, type });
+  const platform = params.platform ?? "all";
+  const transactions = await getTransactions({ from: start, to: end, type, platform });
   const hasAnyTransactions = await hasTransactions();
   const previousRange = getPreviousPeriodRange(start, end);
   const previousTransactions = await getTransactions({
     from: previousRange.start,
     to: previousRange.end,
-    type
+    type,
+    platform
   });
   const selectedYear = params.year ?? start.slice(0, 4);
   const filterParams = new URLSearchParams();
   filterParams.set("from", start);
   filterParams.set("to", end);
   filterParams.set("type", type);
+  if (platform !== "all") {
+    filterParams.set("platform", platform);
+  }
   if (params.year) {
     filterParams.set("year", params.year);
   }
@@ -98,10 +105,10 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-1.5">
             <h2 className="text-xl font-semibold text-[var(--foreground)]">Ledger entries</h2>
-            <p className="text-sm text-[var(--muted)]">Filter by date range and transaction type.</p>
+            <p className="text-sm text-[var(--muted)]">Filter by date range, type, and platform.</p>
           </div>
           <div className="flex flex-col gap-3 xl:items-end">
-            <TransactionFilters from={start} to={end} type={type} year={params.year} />
+            <TransactionFilters from={start} to={end} type={type} platform={platform} year={params.year} />
             <div className="flex flex-col gap-3 sm:flex-row">
               <CsvExportButton transactions={transactions} from={start} to={end} />
               <SummaryExportButton transactions={transactions} from={start} to={end} />

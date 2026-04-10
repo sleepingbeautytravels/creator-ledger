@@ -12,9 +12,9 @@ const demoSummary = {
 };
 
 const brandSummaries = [
-  { source: "Chanel", income: "$1,600", gifted: "$400", overall: "$2,000" },
-  { source: "Mejuri", income: "$900", gifted: "$500", overall: "$1,400" },
-  { source: "Travel partner", income: "$700", gifted: "$200", overall: "$900" }
+  { source: "Chanel", platform: "Instagram", income: "$1,600", gifted: "$400", overall: "$2,000" },
+  { source: "Mejuri", platform: "Instagram", income: "$900", gifted: "$500", overall: "$1,400" },
+  { source: "Travel partner", platform: "Website", income: "$700", gifted: "$200", overall: "$900" }
 ];
 
 const categorySummaries = [
@@ -89,13 +89,14 @@ export default function DemoPage() {
           </h2>
           <div className="grid gap-4 md:grid-cols-3">
             {[
-              ["Top income source", "Chanel", "$1,600"],
-              ["Top gifted source", "Mejuri", "$500"],
-              ["Top overall source", "Chanel", "$2,000"]
-            ].map(([label, source, value]) => (
+              ["Top income source", "Chanel", "Instagram", "$1,600"],
+              ["Top gifted source", "Mejuri", "Instagram", "$500"],
+              ["Top overall source", "Chanel", "Instagram", "$2,000"]
+            ].map(([label, source, platform, value]) => (
               <div key={label} className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-strong)] p-5">
                 <p className="text-sm text-[var(--muted)]">{label}</p>
                 <p className="mt-3 text-xl font-semibold text-[var(--foreground)]">{source}</p>
+                <p className="mt-1 text-sm text-[var(--muted)]">{platform}</p>
                 <p className="mt-1 text-sm text-[var(--muted)]">{value}</p>
               </div>
             ))}
@@ -118,6 +119,7 @@ export default function DemoPage() {
                 <thead className="bg-[rgba(246,241,234,0.72)] text-[var(--muted)]">
                   <tr>
                     <th className="px-5 py-4 font-medium">Brand / Source</th>
+                    <th className="px-5 py-4 font-medium">Platform</th>
                     <th className="px-5 py-4 font-medium">Income</th>
                     <th className="px-5 py-4 font-medium">Gifted value</th>
                     <th className="px-5 py-4 font-medium">Overall value</th>
@@ -127,6 +129,7 @@ export default function DemoPage() {
                   {brandSummaries.map((summary) => (
                     <tr key={summary.source} className="text-[var(--foreground)]">
                       <td className="px-5 py-4 font-medium">{summary.source}</td>
+                      <td className="px-5 py-4 text-[var(--muted)]">{summary.platform}</td>
                       <td className="px-5 py-4">{summary.income}</td>
                       <td className="px-5 py-4">{summary.gifted}</td>
                       <td className="px-5 py-4 font-medium">{summary.overall}</td>

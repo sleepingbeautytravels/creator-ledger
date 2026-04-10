@@ -4,6 +4,7 @@ import { useFormStatus } from "react-dom";
 import { createTransaction } from "@/app/(app)/transactions/actions";
 import { Button } from "@/components/button";
 import { categoryPresets } from "@/lib/transactions/categories";
+import { platformOptions } from "@/lib/transactions/platforms";
 import { getTodayValue } from "@/lib/utils";
 
 const transactionTypes = [
@@ -83,6 +84,18 @@ export function TransactionForm() {
             <option key={category} value={category} />
           ))}
         </datalist>
+      </label>
+
+      <label className="space-y-2.5 text-sm text-[var(--muted)]">
+        <span>Platform</span>
+        <select name="platform" defaultValue="" className={fieldClassName}>
+          <option value="">Optional</option>
+          {platformOptions.map((platform) => (
+            <option key={platform} value={platform}>
+              {platform}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label className="space-y-2.5 text-sm text-[var(--muted)]">

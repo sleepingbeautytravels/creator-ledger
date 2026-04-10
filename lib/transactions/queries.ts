@@ -1,12 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentMonthValue, getMonthRange } from "@/lib/utils";
-import { Database, TransactionType } from "@/types/database";
+import { Database, Platform, TransactionType } from "@/types/database";
 
 type TransactionFilter = {
   month?: string;
   from?: string;
   to?: string;
   type?: TransactionType | "all";
+  platform?: Platform | "all";
 };
 
 type TransactionTotals = {
@@ -23,6 +24,15 @@ function normalizeMonth(month?: string) {
 
 function normalizeType(type?: TransactionType | "all") {
   return type && ["income", "expense", "gifted", "all"].includes(type) ? type : "all";
+}
+
+function normalizePlatform(platform?: Platform | "all") {
+  return platform &&
+    ["Instagram", "YouTube", "TikTok", "Website", "Blog", "Podcast", "Newsletter", "Other", "all"].includes(
+      platform
+    )
+    ? platform
+    : "all";
 }
 
 function isDateValue(value?: string) {
@@ -123,6 +133,7 @@ export async function getLatestTransactionDate() {
 export async function getTransactions(filters: TransactionFilter = {}) {
   const supabase = await createClient();
   const type = normalizeType(filters.type);
+  const platform = normalizePlatform(filters.platform);
   const { start, end } = getTransactionDateRange(filters);
 
   let query = supabase
@@ -135,6 +146,10 @@ export async function getTransactions(filters: TransactionFilter = {}) {
 
   if (type !== "all") {
     query = query.eq("type", type);
+  }
+
+  if (platform !== "all") {
+    query = query.eq("platform", platform);
   }
 
   const { data, error } = await query;

@@ -1,3 +1,4 @@
+import { platformOptions } from "@/lib/transactions/platforms";
 import { Button } from "@/components/button";
 import { RangeShortcuts } from "@/components/range-shortcuts";
 
@@ -5,16 +6,23 @@ type TransactionFiltersProps = {
   from?: string;
   to?: string;
   type?: string;
+  platform?: string;
   year?: string;
 };
 
-export function TransactionFilters({ from, to, type, year }: TransactionFiltersProps) {
+export function TransactionFilters({ from, to, type, platform, year }: TransactionFiltersProps) {
   const fieldClassName =
     "w-full rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[#8b7868]";
 
   return (
     <div className="space-y-3">
-      <RangeShortcuts basePath="/transactions" from={from ?? ""} to={to ?? ""} type={type} />
+      <RangeShortcuts
+        basePath="/transactions"
+        from={from ?? ""}
+        to={to ?? ""}
+        type={type}
+        platform={platform}
+      />
 
       <form action="/transactions" method="get" className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <label className="space-y-2 text-sm text-[var(--muted)]">
@@ -62,6 +70,22 @@ export function TransactionFilters({ from, to, type, year }: TransactionFiltersP
             defaultValue={year}
             className={fieldClassName}
           />
+        </label>
+
+        <label className="space-y-2 text-sm text-[var(--muted)]">
+          <span>Platform</span>
+          <select
+            name="platform"
+            defaultValue={platform ?? "all"}
+            className={fieldClassName}
+          >
+            <option value="all">All platforms</option>
+            {platformOptions.map((platformOption) => (
+              <option key={platformOption} value={platformOption}>
+                {platformOption}
+              </option>
+            ))}
+          </select>
         </label>
 
         <Button type="submit" variant="secondary" className="h-[46px] px-5">

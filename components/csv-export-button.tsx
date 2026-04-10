@@ -16,11 +16,12 @@ function escapeCsvValue(value: string | number | null) {
 }
 
 function createCsv(transactions: Transaction[]) {
-  const headers = ["date", "type", "category", "brand/source", "notes", "amount"];
+  const headers = ["date", "type", "category", "platform", "brand/source", "notes", "amount"];
   const rows = transactions.map((transaction) => [
     transaction.date,
     transaction.type,
     transaction.category,
+    transaction.platform ?? "",
     transaction.brand_or_source,
     transaction.notes ?? "",
     Number(transaction.amount).toFixed(2)

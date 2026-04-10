@@ -4,9 +4,11 @@ import { revalidatePath } from "next/cache";
 import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Database, TransactionType } from "@/types/database";
+import { Database, Platform, TransactionType } from "@/types/database";
+import { platformOptions } from "@/lib/transactions/platforms";
 
 const allowedTypes: TransactionType[] = ["income", "expense", "gifted"];
+const allowedPlatforms = [...platformOptions];
 type InsertTransaction = Database["public"]["Tables"]["transactions"]["Insert"];
 type UpdateTransaction = Database["public"]["Tables"]["transactions"]["Update"];
 
@@ -37,10 +39,16 @@ export async function createTransaction(formData: FormData) {
   const type = getString(formData, "type") as TransactionType;
   const amount = Number(formData.get("amount") ?? 0);
   const category = getString(formData, "category");
+  const platform = getString(formData, "platform") as Platform | "";
   const brand_or_source = getString(formData, "brand_or_source");
   const notes = getString(formData, "notes") || null;
 
-  if (!allowedTypes.includes(type) || Number.isNaN(amount) || amount < 0) {
+  if (
+    !allowedTypes.includes(type) ||
+    Number.isNaN(amount) ||
+    amount < 0 ||
+    (platform && !allowedPlatforms.includes(platform as Platform))
+  ) {
     redirect("/transactions?error=Invalid%20transaction%20details");
   }
 
@@ -50,6 +58,7 @@ export async function createTransaction(formData: FormData) {
     amount,
     type,
     category,
+    platform: platform || null,
     brand_or_source,
     notes: notes ?? null,
   };
@@ -83,10 +92,17 @@ export async function updateTransaction(formData: FormData) {
   const type = getString(formData, "type") as TransactionType;
   const amount = Number(formData.get("amount") ?? 0);
   const category = getString(formData, "category");
+  const platform = getString(formData, "platform") as Platform | "";
   const brand_or_source = getString(formData, "brand_or_source");
   const notes = getString(formData, "notes") || null;
 
-  if (!id || !allowedTypes.includes(type) || Number.isNaN(amount) || amount < 0) {
+  if (
+    !id ||
+    !allowedTypes.includes(type) ||
+    Number.isNaN(amount) ||
+    amount < 0 ||
+    (platform && !allowedPlatforms.includes(platform as Platform))
+  ) {
     redirectWithMessage(returnTo, "error", "Invalid transaction details");
   }
 
@@ -95,6 +111,7 @@ export async function updateTransaction(formData: FormData) {
     amount,
     type,
     category,
+    platform: platform || null,
     brand_or_source,
     notes: notes ?? null
   };
