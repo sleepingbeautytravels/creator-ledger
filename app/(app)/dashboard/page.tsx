@@ -4,9 +4,9 @@ import { PaidVsGiftedCard } from "@/components/paid-vs-gifted-card";
 import { RangeShortcuts } from "@/components/range-shortcuts";
 import { SummaryCard } from "@/components/summary-card";
 import { OnboardingEmptyState } from "@/components/onboarding-empty-state";
-import { getDashboardSummary, hasTransactions } from "@/lib/transactions/queries";
+import { getDashboardSummary, getLatestTransactionDate, hasTransactions } from "@/lib/transactions/queries";
 import { formatRangeHeading } from "@/lib/transactions/periods";
-import { getCurrentMonthValue } from "@/lib/utils";
+import { formatDaysAgo, getCurrentMonthValue } from "@/lib/utils";
 
 type DashboardPageProps = {
   searchParams: Promise<{
@@ -24,6 +24,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
     to: params.to
   });
   const hasAnyTransactions = await hasTransactions();
+  const latestTransactionDate = await getLatestTransactionDate();
   const heading = formatRangeHeading(summary.start, summary.end, params.range);
 
   return (
@@ -37,6 +38,12 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
           A clear snapshot of paid work, operational costs, gifted value, and net position for the selected period.
         </p>
         <RangeShortcuts basePath="/dashboard" from={summary.start} to={summary.end} />
+        <div className="space-y-1">
+          <p className="text-sm text-[var(--muted)]/85">A living view of your work as it builds over time.</p>
+          <p className="text-sm text-[var(--muted)]/75">
+            {latestTransactionDate ? `Last updated ${formatDaysAgo(latestTransactionDate)}` : "No entries yet"}
+          </p>
+        </div>
       </section>
 
       {!hasAnyTransactions ? (
@@ -80,6 +87,14 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
               A calm overview of your work this month — what came in, what went out, and what arrived
               in kind. Use this space to stay aware, not overwhelmed.
             </p>
+          </Card>
+
+          <Card className="space-y-3">
+            <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">Keep it going</h2>
+            <p className="max-w-2xl text-[15px] leading-7 text-[var(--muted)]/88">
+              This becomes clearer each time you return — even a single entry adds to the picture.
+            </p>
+            <p className="text-sm text-[var(--muted)]/80">Most creators check in once a week.</p>
           </Card>
         </>
       )}

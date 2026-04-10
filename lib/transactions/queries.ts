@@ -104,6 +104,22 @@ export async function hasTransactions() {
   return (data ?? []).length > 0;
 }
 
+export async function getLatestTransactionDate() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("date")
+    .order("date", { ascending: false })
+    .limit(1);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const latestTransaction = (data ?? []) as Array<Pick<TransactionRow, "date">>;
+  return latestTransaction[0]?.date ?? null;
+}
+
 export async function getTransactions(filters: TransactionFilter = {}) {
   const supabase = await createClient();
   const type = normalizeType(filters.type);

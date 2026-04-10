@@ -40,3 +40,22 @@ export function formatMonthLabel(month: string) {
     year: "numeric"
   }).format(new Date(year, monthIndex - 1, 1));
 }
+
+export function formatDaysAgo(dateValue: string) {
+  const today = new Date(getTodayValue());
+  const target = new Date(dateValue);
+  const differenceInDays = Math.max(
+    0,
+    Math.round((today.getTime() - target.getTime()) / 86_400_000)
+  );
+
+  if (differenceInDays === 0) {
+    return "today";
+  }
+
+  if (differenceInDays === 1) {
+    return "1 day ago";
+  }
+
+  return `${differenceInDays} days ago`;
+}
