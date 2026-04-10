@@ -6,9 +6,10 @@ type RangeShortcutsProps = {
   to: string;
   type?: string;
   platform?: string;
+  range?: string;
 };
 
-export function RangeShortcuts({ basePath, from, to, type = "all", platform = "all" }: RangeShortcutsProps) {
+export function RangeShortcuts({ basePath, from, to, type = "all", platform = "all", range }: RangeShortcutsProps) {
   return (
     <div className="flex flex-wrap gap-2">
       {getDateShortcuts().map((shortcut) => {
@@ -26,12 +27,13 @@ export function RangeShortcuts({ basePath, from, to, type = "all", platform = "a
           }
         }
 
-        const isActive = from === shortcut.from && to === shortcut.to;
+        const isActive =
+          range === shortcut.slug || (from === shortcut.from && to === shortcut.to);
 
         return (
           <a
             key={shortcut.label}
-            href={`${basePath}?${params.toString()}`}
+            href={`${basePath}?${params.toString()}${basePath === "/transactions" ? "#ledger-entries" : ""}`}
             className={`rounded-full border border-[var(--border)] px-3 py-1.5 text-xs transition hover:bg-white ${
               isActive ? "bg-[var(--surface-strong)] text-[var(--foreground)]" : "bg-transparent text-[var(--muted)]"
             }`}

@@ -7,12 +7,14 @@ type TransactionFiltersProps = {
   to?: string;
   type?: string;
   platform?: string;
+  range?: string;
   year?: string;
 };
 
-export function TransactionFilters({ from, to, type, platform, year }: TransactionFiltersProps) {
+export function TransactionFilters({ from, to, type, platform, range, year }: TransactionFiltersProps) {
   const fieldClassName =
     "w-full rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[#8b7868]";
+  const actionPath = "/transactions#ledger-entries";
 
   return (
     <div className="space-y-3">
@@ -22,9 +24,11 @@ export function TransactionFilters({ from, to, type, platform, year }: Transacti
         to={to ?? ""}
         type={type}
         platform={platform}
+        range={range}
       />
 
-      <form action="/transactions" method="get" className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+      <form action={actionPath} method="get" className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        {range === "all-time" && !from ? <input type="hidden" name="range" value="all-time" /> : null}
         <label className="space-y-2 text-sm text-[var(--muted)]">
           <span>From date</span>
           <input

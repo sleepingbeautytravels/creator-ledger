@@ -10,11 +10,12 @@ export type ValueSummary = {
   overallValue: number;
 };
 
-type SummaryKey = "brand_or_source" | "category";
+type SummaryKey = "brand_or_source" | "category" | "platform";
 
 export function summarizeBy(transactions: TransactionRow[], key: SummaryKey) {
   const summaries = transactions.reduce<Record<string, ValueSummary>>((accumulator, transaction) => {
-    const label = transaction[key].trim() || "Unspecified";
+    const rawValue = transaction[key];
+    const label = typeof rawValue === "string" ? rawValue.trim() : "";
 
     if (!accumulator[label]) {
       accumulator[label] = {

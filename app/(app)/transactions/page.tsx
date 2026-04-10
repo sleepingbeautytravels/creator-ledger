@@ -26,6 +26,7 @@ type TransactionsPageProps = {
     brand?: string;
     type?: "income" | "expense" | "gifted" | "all";
     platform?: Platform | "all";
+    range?: string;
     error?: string;
     success?: string;
   }>;
@@ -62,10 +63,15 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
   if (platform !== "all") {
     filterParams.set("platform", platform);
   }
+  if (params.range) {
+    filterParams.set("range", params.range);
+  }
   if (params.year) {
     filterParams.set("year", params.year);
   }
-  const returnTo = `/transactions?${filterParams.toString()}`;
+  const returnToBase = `/transactions?${filterParams.toString()}`;
+  const returnTo = `${returnToBase}#ledger-entries`;
+  const displayFrom = params.range === "all-time" && start === "1900-01-01" ? "" : start;
   const currentTotals = getTotalsForComparison(transactions);
   const previousTotals = getTotalsForComparison(previousTransactions);
 
@@ -101,14 +107,21 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
         <TransactionForm />
       </Card>
 
-      <Card className="space-y-6">
+      <Card id="ledger-entries" className="scroll-mt-24 space-y-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-1.5">
             <h2 className="text-xl font-semibold text-[var(--foreground)]">Ledger entries</h2>
             <p className="text-sm text-[var(--muted)]">Filter by date range, type, and platform.</p>
           </div>
           <div className="flex flex-col gap-3 xl:items-end">
-            <TransactionFilters from={start} to={end} type={type} platform={platform} year={params.year} />
+            <TransactionFilters
+              from={displayFrom}
+              to={end}
+              type={type}
+              platform={platform}
+              range={params.range}
+              year={params.year}
+            />
             <div className="flex flex-col gap-3 sm:flex-row">
               <CsvExportButton transactions={transactions} from={start} to={end} />
               <SummaryExportButton transactions={transactions} from={start} to={end} />
@@ -136,7 +149,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
 
           <TopSourceInsights transactions={transactions} />
 
-          <BrandSourceSummary transactions={transactions} returnTo={returnTo} />
+          <BrandSourceSummary transactions={transactions} returnTo={returnToBase} />
 
           <BrandSourceDetail brand={params.brand} transactions={transactions} />
 
