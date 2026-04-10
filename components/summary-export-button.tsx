@@ -6,6 +6,7 @@ type SummaryExportButtonProps = {
   transactions: TransactionRow[];
   from: string;
   to: string;
+  range?: string;
 };
 
 function escapeCsv(value: string | number) {
@@ -24,7 +25,11 @@ function formatPeriodLabel(from: string, to: string) {
   return `${formatExportDate(from)} to ${formatExportDate(to)}`;
 }
 
-export function SummaryExportButton({ transactions, from, to }: SummaryExportButtonProps) {
+function getExportFileSuffix(from: string, to: string, range?: string) {
+  return range === "all-time" ? "all-time" : `${from}-to-${to}`;
+}
+
+export function SummaryExportButton({ transactions, from, to, range }: SummaryExportButtonProps) {
   function handleExport() {
     const income = transactions.filter((entry) => entry.type === "income").reduce((sum, entry) => sum + Number(entry.amount), 0);
     const expenses = transactions.filter((entry) => entry.type === "expense").reduce((sum, entry) => sum + Number(entry.amount), 0);
@@ -34,8 +39,8 @@ export function SummaryExportButton({ transactions, from, to }: SummaryExportBut
     const categorySummaries = summarizeBy(transactions, "category");
     const platformSummaries = summarizeBy(transactions, "platform");
     const lines = [
-      ["section", "label", "platform", "income", "expenses", "gifted value", "overall value"],
-      ["Totals", formatPeriodLabel(from, to), "", income.toFixed(2), expenses.toFixed(2), gifted.toFixed(2), netPosition.toFixed(2)],
+      ["Section", "Label", "Platform", "Income", "Expenses", "Gifted value", "Overall value"],
+      ["Totals", range === "all-time" ? "All time" : formatPeriodLabel(from, to), "", income.toFixed(2), expenses.toFixed(2), gifted.toFixed(2), netPosition.toFixed(2)],
       ...brandSummaries.map((summary) => [
         "Brand / Source",
         summary.label,
@@ -70,7 +75,7 @@ export function SummaryExportButton({ transactions, from, to }: SummaryExportBut
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = `creator-ledger-summary-${from}-to-${to}.csv`;
+    link.download = `creator-ledger-summary-${getExportFileSuffix(from, to, range)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }

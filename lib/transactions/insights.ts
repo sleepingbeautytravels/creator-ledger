@@ -41,7 +41,8 @@ export function summarizeBy(transactions: TransactionRow[], key: SummaryKey) {
       accumulator[label].expenses += amount;
     }
 
-    accumulator[label].overallValue = accumulator[label].income + accumulator[label].gifted;
+    accumulator[label].overallValue =
+      accumulator[label].income - accumulator[label].expenses + accumulator[label].gifted;
 
     return accumulator;
   }, {});

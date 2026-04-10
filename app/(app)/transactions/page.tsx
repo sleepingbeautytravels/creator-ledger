@@ -12,7 +12,7 @@ import { TransactionForm } from "@/components/transaction-form";
 import { TransactionsTable } from "@/components/transactions-table";
 import { TopSourceInsights } from "@/components/top-source-insights";
 import { getTransactionDateRange, getTransactions, hasTransactions } from "@/lib/transactions/queries";
-import { getPreviousPeriodRange } from "@/lib/transactions/periods";
+import { formatRangeHeading, getPreviousPeriodRange } from "@/lib/transactions/periods";
 import { getCurrentMonthValue } from "@/lib/utils";
 import { Platform } from "@/types/database";
 import { YearlyBreakdown } from "@/components/yearly-breakdown";
@@ -72,6 +72,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
   const returnToBase = `/transactions?${filterParams.toString()}`;
   const returnTo = `${returnToBase}#ledger-entries`;
   const displayFrom = params.range === "all-time" && start === "1900-01-01" ? "" : start;
+  const heading = params.range === "all-time" ? "All time" : formatRangeHeading(start, end, params.range);
   const currentTotals = getTotalsForComparison(transactions);
   const previousTotals = getTotalsForComparison(previousTransactions);
 
@@ -80,7 +81,7 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
       <section className="space-y-4">
         <p className="text-xs uppercase tracking-[0.28em] text-[var(--muted)]">TRANSACTIONS</p>
         <h1 className="text-4xl font-semibold text-[var(--foreground)] sm:text-5xl">
-          {start === end ? start : `${start} to ${end}`}
+          {heading}
         </h1>
         <p className="max-w-3xl leading-7 text-[var(--muted)]">
           Add and review every creator transaction in one place, with simple filters to keep
@@ -123,8 +124,8 @@ export default async function TransactionsPage({ searchParams }: TransactionsPag
               year={params.year}
             />
             <div className="flex flex-col gap-3 sm:flex-row">
-              <CsvExportButton transactions={transactions} from={start} to={end} />
-              <SummaryExportButton transactions={transactions} from={start} to={end} />
+              <CsvExportButton transactions={transactions} from={start} to={end} range={params.range} />
+              <SummaryExportButton transactions={transactions} from={start} to={end} range={params.range} />
             </div>
           </div>
         </div>

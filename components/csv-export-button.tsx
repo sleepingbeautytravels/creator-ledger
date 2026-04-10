@@ -8,6 +8,7 @@ type CsvExportButtonProps = {
   transactions: Transaction[];
   from: string;
   to: string;
+  range?: string;
 };
 
 function escapeCsvValue(value: string | number | null) {
@@ -15,24 +16,58 @@ function escapeCsvValue(value: string | number | null) {
   return `"${normalized.replaceAll('"', '""')}"`;
 }
 
+function formatExportDate(date: string) {
+  return new Intl.DateTimeFormat("en-AU", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  }).format(new Date(`${date}T00:00:00`));
+}
+
+function getSignedAmount(transaction: Transaction) {
+  const amount = Number(transaction.amount);
+
+  return transaction.type === "expense" ? -amount : amount;
+}
+
+function getExportFileSuffix(from: string, to: string, range?: string) {
+  return range === "all-time" ? "all-time" : `${from}-to-${to}`;
+}
+
 function createCsv(transactions: Transaction[]) {
-  const headers = ["date", "type", "category", "platform", "brand/source", "notes", "amount"];
-  const rows = transactions.map((transaction) => [
-    transaction.date,
-    transaction.type,
-    transaction.category,
-    transaction.platform ?? "",
-    transaction.brand_or_source,
-    transaction.notes ?? "",
-    Number(transaction.amount).toFixed(2)
-  ]);
+  const headers = [
+    "Date",
+    "Type",
+    "Category",
+    "Platform",
+    "Brand / Source",
+    "Notes",
+    "Amount",
+    "Running overall position"
+  ];
+  let runningOverallPosition = 0;
+  const rows = transactions.map((transaction) => {
+    const signedAmount = getSignedAmount(transaction);
+    runningOverallPosition += signedAmount;
+
+    return [
+      formatExportDate(transaction.date),
+      transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1),
+      transaction.category,
+      transaction.platform ?? "",
+      transaction.brand_or_source,
+      transaction.notes ?? "",
+      signedAmount.toFixed(2),
+      runningOverallPosition.toFixed(2)
+    ];
+  });
 
   return [headers, ...rows]
     .map((row) => row.map(escapeCsvValue).join(","))
     .join("\n");
 }
 
-export function CsvExportButton({ transactions, from, to }: CsvExportButtonProps) {
+export function CsvExportButton({ transactions, from, to, range }: CsvExportButtonProps) {
   function handleExport() {
     const csv = createCsv(transactions);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
@@ -40,7 +75,7 @@ export function CsvExportButton({ transactions, from, to }: CsvExportButtonProps
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = `creator-ledger-${from}-to-${to}.csv`;
+    link.download = `creator-ledger-transactions-${getExportFileSuffix(from, to, range)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }
