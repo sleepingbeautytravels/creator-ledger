@@ -82,6 +82,9 @@ export default function HomePage() {
               View demo
             </Link>
           </div>
+          <p className="text-sm text-[var(--muted)]/80">
+            Free to use. If it helps, support is optional.
+          </p>
         </div>
 
         <Card className="space-y-6">
@@ -166,6 +169,9 @@ export default function HomePage() {
           <p className="max-w-3xl leading-7 text-[var(--muted)]">
             A quieter way to understand what your work is actually worth — across paid work,
             gifted value, and the costs behind it.
+          </p>
+          <p className="max-w-3xl leading-7 text-[var(--muted)]">
+            Built with a CPA background, designed for creators with no accounting knowledge at all.
           </p>
         </Card>
       </section>
