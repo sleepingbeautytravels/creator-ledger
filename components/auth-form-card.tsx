@@ -16,8 +16,29 @@ export function AuthFormCard({ initialMessage }: AuthFormCardProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [isStartingGoogleAuth, setIsStartingGoogleAuth] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(initialMessage ?? null);
+
+  async function handleGoogleSignIn() {
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    setIsStartingGoogleAuth(true);
+
+    const redirectTo = `${window.location.origin}/auth/callback`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo
+      }
+    });
+
+    if (error) {
+      console.log("Google auth error:", error.message);
+      setErrorMessage(error.message);
+      setIsStartingGoogleAuth(false);
+    }
+  }
 
   async function handleLogin() {
     setErrorMessage(null);
@@ -106,6 +127,26 @@ export function AuthFormCard({ initialMessage }: AuthFormCardProps) {
       ) : null}
 
       <form className="space-y-5">
+        {!showForgotPassword ? (
+          <>
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full"
+              disabled={isStartingGoogleAuth}
+              onClick={() => void handleGoogleSignIn()}
+            >
+              {isStartingGoogleAuth ? "Opening Google..." : "Continue with Google"}
+            </Button>
+
+            <div className="flex items-center gap-3 pt-0.5">
+              <div className="h-px flex-1 bg-[var(--border)]" />
+              <span className="text-xs uppercase tracking-[0.18em] text-[var(--muted)]/75">or</span>
+              <div className="h-px flex-1 bg-[var(--border)]" />
+            </div>
+          </>
+        ) : null}
+
         <label className="block space-y-2.5 text-sm text-[var(--muted)]">
           <span>Email</span>
           <input
