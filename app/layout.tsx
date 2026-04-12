@@ -3,10 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Creator Ledger",
-  description: "A calm financial tracker for creators.",
-  verification: {
-    google: "QFdcHZ7iAIYKARzKzsHOzW-GEUEBdzzdD9XsQt6diTo"
-  }
+  description: "A calm financial tracker for creators."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
