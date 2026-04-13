@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { Card } from "@/components/card";
+import { DarkCtaLink } from "@/components/dark-cta-link";
 import { MonthlyNoteCard } from "@/components/monthly-note-card";
 import { PaidVsGiftedCard } from "@/components/paid-vs-gifted-card";
 import { SummaryCard } from "@/components/summary-card";
-import { SupportButton } from "@/components/support-button";
 
 const demoSummary = {
   income: 3200,
@@ -57,11 +58,26 @@ export default function DemoPage() {
             </div>
           </div>
 
-          <div className="space-y-2 pt-1 sm:pt-2 sm:text-right">
-            <SupportButton className="min-w-[116px]" />
-            <p className="text-xs text-[var(--muted)]/80">
-              Completely optional — if you find this helpful.
-            </p>
+          <div className="flex flex-col items-stretch gap-2 pt-1 sm:items-end sm:pt-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <DarkCtaLink href="/auth" className="min-w-[126px]">
+                Start tracking
+              </DarkCtaLink>
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-2.5 text-sm text-[var(--foreground)] transition hover:bg-white"
+              >
+                Back to home
+              </Link>
+            </div>
+            <a
+              href="https://buymeacoffee.com/sleepingbeautytravels"
+              target="_blank"
+              rel="noreferrer"
+              className="text-center text-sm text-[var(--muted)]/82 transition hover:text-[var(--foreground)] sm:text-right"
+            >
+              Support this project
+            </a>
           </div>
         </section>
 
