@@ -4,6 +4,7 @@ import { DarkCtaLink } from "@/components/dark-cta-link";
 import { MonthlyNoteCard } from "@/components/monthly-note-card";
 import { PaidVsGiftedCard } from "@/components/paid-vs-gifted-card";
 import { SummaryCard } from "@/components/summary-card";
+import { SupportButton } from "@/components/support-button";
 
 const demoSummary = {
   income: 3200,
