@@ -50,3 +50,19 @@ h4 {
 ::selection {
   background: rgba(153, 132, 109, 0.18);
 }
+
+@keyframes demo-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demo-fade-in {
+  animation: demo-fade-in 700ms ease-out both;
+}

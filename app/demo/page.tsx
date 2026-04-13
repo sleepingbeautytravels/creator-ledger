@@ -34,7 +34,7 @@ export default function DemoPage() {
   return (
     <main className="mx-auto max-w-6xl px-6 py-10 sm:py-12">
       <div className="space-y-12 sm:space-y-14">
-        <section className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+        <section className="demo-fade-in flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-5">
             <p className="text-xs font-normal uppercase tracking-[0.28em] text-[var(--muted)]/75">
               OVERVIEW
@@ -50,6 +50,10 @@ export default function DemoPage() {
                 A range-aware preview of paid work, operational costs, gifted value, and net
                 position.
               </p>
+              <p className="max-w-3xl text-[15px] leading-7 text-[var(--muted)]/88">
+                This sample period shows how paid work, gifted value, and costs sit together in
+                one clear view.
+              </p>
             </div>
           </div>
 
@@ -61,7 +65,7 @@ export default function DemoPage() {
           </div>
         </section>
 
-        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <section className="demo-fade-in grid gap-4 md:grid-cols-2 xl:grid-cols-4" style={{ animationDelay: "80ms" }}>
           <SummaryCard label="Total income" value={demoSummary.income} />
           <SummaryCard label="Total expenses" value={demoSummary.expense} />
           <SummaryCard label="Total gifted value" value={demoSummary.gifted} />
@@ -72,7 +76,7 @@ export default function DemoPage() {
           />
         </section>
 
-        <section className="grid gap-4 md:grid-cols-2">
+        <section className="demo-fade-in grid gap-4 md:grid-cols-2" style={{ animationDelay: "140ms" }}>
           <PaidVsGiftedCard income={3200} gifted={1100} />
           <MonthlyNoteCard
             income={demoSummary.income}
@@ -82,7 +86,7 @@ export default function DemoPage() {
           />
         </section>
 
-        <Card className="space-y-3.5">
+        <Card className="demo-fade-in space-y-3.5" style={{ animationDelay: "200ms" }}>
           <p className="text-sm font-normal tracking-[0.01em] text-[var(--muted)]/85">Period insight</p>
           <p className="max-w-2xl text-[15px] leading-7 text-[color:rgba(32,28,26,0.82)]">
             Income led this period, with Instagram carrying most paid value and Chanel contributing
@@ -90,10 +94,15 @@ export default function DemoPage() {
           </p>
         </Card>
 
-        <Card className="space-y-6">
-          <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
-            Source insights
-          </h2>
+        <Card className="demo-fade-in space-y-6" style={{ animationDelay: "260ms" }}>
+          <div className="space-y-1.5">
+            <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
+              Source insights
+            </h2>
+            <p className="text-sm text-[var(--muted)]">
+              A simple read on which sources are shaping the selected period most clearly.
+            </p>
+          </div>
           <div className="grid gap-4 md:grid-cols-3">
             {[
               ["Top income source", "Chanel", "Instagram", "$1,600"],
@@ -110,13 +119,13 @@ export default function DemoPage() {
           </div>
         </Card>
 
-        <Card className="space-y-6">
+        <Card className="demo-fade-in space-y-6" style={{ animationDelay: "320ms" }}>
           <div className="space-y-1.5">
             <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
               Brand/source summary
             </h2>
             <p className="text-sm text-[var(--muted)]">
-              A simple view of which collaborations are carrying the selected period.
+              A filtered view of how each source contributes across paid work, gifted value, and costs.
             </p>
           </div>
 
@@ -150,13 +159,13 @@ export default function DemoPage() {
           </div>
         </Card>
 
-        <Card className="space-y-6">
+        <Card className="demo-fade-in space-y-6" style={{ animationDelay: "380ms" }}>
           <div className="space-y-1.5">
             <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
               Category breakdown
             </h2>
             <p className="text-sm text-[var(--muted)]">
-              See how paid, gifted, and operational activity gathers by creator category.
+              See how the selected period gathers by creator category, including both value and spend.
             </p>
           </div>
 
@@ -173,13 +182,13 @@ export default function DemoPage() {
           </div>
         </Card>
 
-        <Card className="space-y-6">
+        <Card className="demo-fade-in space-y-6" style={{ animationDelay: "440ms" }}>
           <div className="space-y-1.5">
             <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
               Platform summary
             </h2>
             <p className="text-sm text-[var(--muted)]">
-              A filtered view of how value is distributed across platforms.
+              A filtered view of how value and costs are distributed across platforms.
             </p>
           </div>
 
@@ -211,13 +220,19 @@ export default function DemoPage() {
           </div>
         </Card>
 
-        <Card>
+        <Card className="demo-fade-in space-y-4" style={{ animationDelay: "500ms" }}>
           <h2 className="text-xl font-medium text-[color:rgba(32,28,26,0.92)]">
             Selected period, at a glance
           </h2>
           <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[var(--muted)]/88">
-            A calm overview of what came in, what went out, and what arrived in kind — across the
-            period you choose.
+            This sample period is led by paid work, with gifted value adding useful context rather
+            than overshadowing the overall picture. Instagram is doing most of the value-carrying
+            work here, while Website activity shows how costs and smaller returns still belong in
+            the same view.
+          </p>
+          <p className="max-w-2xl text-[15px] leading-7 text-[var(--muted)]/88">
+            Together, the sections above show how Creator Ledger helps creators read a period more
+            clearly without turning it into a heavy report.
           </p>
         </Card>
       </div>
