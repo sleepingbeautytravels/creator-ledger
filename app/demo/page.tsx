@@ -58,7 +58,7 @@ export default function DemoPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-stretch gap-2 pt-1 sm:items-end sm:pt-2">
+          <div className="flex flex-col items-stretch gap-2 pt-7 sm:items-end sm:pt-8">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <DarkCtaLink href="/auth" className="min-w-[126px]">
                 Start tracking
@@ -70,6 +70,9 @@ export default function DemoPage() {
                 Back to home
               </Link>
             </div>
+            <p className="text-center text-xs text-[var(--muted)]/78 sm:text-right">
+              Try it with your own data
+            </p>
             <a
               href="https://buymeacoffee.com/sleepingbeautytravels"
               target="_blank"

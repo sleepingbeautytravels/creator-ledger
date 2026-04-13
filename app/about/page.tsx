@@ -33,11 +33,14 @@ export default function AboutPage() {
         <Link href="/" className="text-xs uppercase tracking-[0.28em] text-[var(--muted)]">
           CREATOR LEDGER
         </Link>
-        <div className="flex items-center gap-4">
-          <Link href="/" className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
-            Home
-          </Link>
-          <DarkCtaLink href="/auth">Start tracking</DarkCtaLink>
+        <div className="flex flex-col items-end gap-2">
+          <div className="flex items-center gap-4">
+            <Link href="/" className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
+              Home
+            </Link>
+            <DarkCtaLink href="/auth">Start tracking</DarkCtaLink>
+          </div>
+          <p className="text-xs text-[var(--muted)]/78">Try it with your own data</p>
         </div>
       </header>
 
