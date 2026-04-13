@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Card } from "@/components/card";
 import { DarkCtaLink } from "@/components/dark-cta-link";
 import { SupportButton } from "@/components/support-button";
+
+export const metadata: Metadata = {
+  title: "Creator Ledger — Track creator income, gifted products & expenses",
+  description:
+    "A calm financial tracking tool for creators. Track income, gifted value, and expenses in one simple place. Free to use."
+};
 
 const proofPoints = [
   "Track paid, gifted, and operational costs",
