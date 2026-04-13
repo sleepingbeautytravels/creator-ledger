@@ -58,7 +58,7 @@ export default function DemoPage() {
             </div>
           </div>
 
-          <div className="flex flex-col items-stretch gap-2 pt-7 sm:items-end sm:pt-8">
+          <div className="flex flex-col items-stretch gap-2 pt-8 sm:items-end sm:pt-10">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <DarkCtaLink href="/auth" className="min-w-[126px]">
                 Start tracking
@@ -73,14 +73,6 @@ export default function DemoPage() {
             <p className="text-center text-xs text-[var(--muted)]/78 sm:text-right">
               Try it with your own data
             </p>
-            <a
-              href="https://buymeacoffee.com/sleepingbeautytravels"
-              target="_blank"
-              rel="noreferrer"
-              className="text-center text-sm text-[var(--muted)]/82 transition hover:text-[var(--foreground)] sm:text-right"
-            >
-              Support this project
-            </a>
           </div>
         </section>
 
@@ -253,6 +245,19 @@ export default function DemoPage() {
             Together, the sections above show how Creator Ledger helps creators read a period more
             clearly without turning it into a heavy report.
           </p>
+        </Card>
+
+        <Card className="demo-fade-in mx-auto max-w-2xl space-y-4 text-center" style={{ animationDelay: "560ms" }}>
+          <h2 className="text-2xl font-medium text-[color:rgba(32,28,26,0.92)]">
+            Support this project
+          </h2>
+          <p className="mx-auto max-w-xl text-sm leading-6 text-[var(--muted)]">
+            If Creator Ledger has been helpful, you’re welcome to support its continued development.
+          </p>
+          <div className="flex justify-center">
+            <SupportButton />
+          </div>
+          <p className="text-xs text-[var(--muted)]/78">Completely optional.</p>
         </Card>
       </div>
     </main>
