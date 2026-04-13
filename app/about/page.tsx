@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/card";
+import { DarkCtaLink } from "@/components/dark-cta-link";
 import { SupportButton } from "@/components/support-button";
 
 const sections = [
@@ -32,9 +33,12 @@ export default function AboutPage() {
         <Link href="/" className="text-xs uppercase tracking-[0.28em] text-[var(--muted)]">
           CREATOR LEDGER
         </Link>
-        <Link href="/auth" className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
-          Start tracking
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/" className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]">
+            Home
+          </Link>
+          <DarkCtaLink href="/auth">Start tracking</DarkCtaLink>
+        </div>
       </header>
 
       <section className="space-y-5">
